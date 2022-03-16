@@ -28,7 +28,6 @@ export class Mainbanner{
 
             cancelAnimationFrame(this.#callback);
             this.#callback = requestAnimationFrame(f);
-
         })
 
         const f = (time) => {
