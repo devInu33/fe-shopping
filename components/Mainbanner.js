@@ -13,7 +13,7 @@ export class Mainbanner{
         const notHover = spans[0].style.border;
         console.log(spans);
         const onHover = `2px solid #4285f4;`;
-        addEvent(document.querySelector('.thumbnail'), 'click', 'span', (e) => {
+        addEvent(document.querySelector('.thumbnail'), 'mouseenter', 'span', (e) => {
             console.log(e.target);
             const children = [...spans];
             const index = children.indexOf(e.target);
@@ -22,7 +22,6 @@ export class Mainbanner{
             this.#index = index;
             images[this.#index].style.display = 'block'
             spans[this.#index].style.border = onHover;
-
             cancelAnimationFrame(this.#callback);
             this.#callback = requestAnimationFrame(f);
         })
