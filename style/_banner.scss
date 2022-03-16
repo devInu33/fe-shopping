@@ -1,0 +1,44 @@
+@use "shared";
+
+
+.banner{
+  position: relative;
+  height: 450px;
+  background: #fafafa;
+  .main_bg{
+    @include shared.absolute_zero($left:50%, $top:0);
+    margin-left: -960px;
+    display:none;
+  }
+  .selected-product {
+    @extend %width_center;
+    position: relative;
+    overflow: hidden;
+    height: 450px;
+    .image-container {
+      a {
+        background: url(https://img1a.coupangcdn.com/image/coupang/common/ico_blank.png);
+      }
+    }
+  }
+}
+.selected-product{
+  .thumbnail{
+    @include shared.absolute_zero($top:45px, $right:10px);
+    box-shadow: 0 4px 5px rgb(0 0 0 / 30%);
+    li{
+      position: relative;
+      a{
+        display:block;
+        img{
+          border-top: 1px solid #fff;
+        }
+        span{
+          @include shared.absolute_zero($top:0, $right:0,$left:0,$bottom:0);
+          border:1px solid;
+          border-color: #eee #fff;
+        }
+      }
+    }
+  }
+}
