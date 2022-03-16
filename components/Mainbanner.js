@@ -24,7 +24,7 @@ export class Mainbanner{
             spans[this.#index].style.border = onHover;
 
             cancelAnimationFrame(this.#callback);
-            requestAnimationFrame(f);
+            this.#callback = requestAnimationFrame(f);
         })
 
         const f = (time) => {
