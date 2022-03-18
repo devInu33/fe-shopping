@@ -6,7 +6,8 @@ export const myFetch = async (key)=>{
         throw e;
     }
 }
- const sources = await(await fetch('sources.json')).json();
+ const sources = await myFetch('sources');
+console.log(sources);
 export const store= {
     state:sources
 }

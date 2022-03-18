@@ -31,7 +31,32 @@
                         <img src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
                     </h1>
                     <div class="product-search">
+                        <form id="searchForm">
+                            <fieldset>
+                                <legend>상품검색</legend>
+                                <div class="searchForm">
+                                    <div class="select-category">
+                                        <a class="select-category__button"></a>
+                                        <a class="select-category__current">전체</a>
+                                    </div>
+                                    <select id="searchCategories">
 
+                                    </select>
+                                    <label for="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!"/></label>
+                                    <a class="speech-mic"></a>
+                                </div>
+                                <a id="searchBtn" ></a>
+                            </fieldset>
+                        </form>
+                        <div id="popupWords">
+                            <div id="autoComplete">
+
+                            </div>
+                        </div>
+                        <div class="historyBtns">
+                            <span class="deleteAll"></span>
+                            <span class="historyonOff"></span>
+                        </div>
                     </div>
                     <ul class="icon-menus">
                         <li class="my-coupang more">
@@ -63,28 +88,8 @@
         </header>
     </div>
     <section class="banner">
-        <img class="main_bg" style="display:block;"/>
-        <img class="main_bg"/>
-        <img class="main_bg"/>
-        <img class="main_bg"/>
-        <img class="main_bg"/>
-        <img class="main_bg"/>
-        <div class="selected-product">
-            <div class="image-container">
-                <a></a>
-                <a></a>
-                <a></a>
-                <a></a>
-            </div>
-            <ul class="thumbnail">
-                <li><a><img/><span></span></a></li>
-                <li><a><img/><span></span></a></li>
-                <li><a><img/><span></span></a></li>
-                <li><a><img/><span></span></a></li>
-                <li><a><img/><span></span></a></li>
-                <li><a><img/><span></span></a></li>
-            </ul>
-        </div>
+
+
     </section>
     <section>
         <section></section>
