@@ -6,22 +6,24 @@ export default class Component{
     constructor(target,props) {
         this.$target=target;
         this.$props=props;
-        this.setup();
-        this.setEvent();
-        this.render();
+        requestAnimationFrame(()=>{
+            this.setup();
+            this.setEvent();
+
+        })
     }
-    render(){this.$target.innerHTML=this.template();}
+    // render(){this.$target.innerHTML=this.template();}
     template(){return ``}
     setup(){}
     setEvent(){
     }
-    setState(newState){this.$state = {...this.$state, newState}; this.render();}
-    addEvent(target,eventType,selector,callback){
-        const children = [...target.querySelectorAll(selector)];
-        const ok= (eventTarget)=>children.includes(eventTarget)||eventTarget.closest(selector);
-        target.addEventListener(eventType, (event)=>{
+    // setState(newState){this.$state = {...this.$state, ...newState}; }
+    addEvent(eventType,selector,callback, capture=false){
+        const children = [...this.$target.querySelectorAll(selector)];
+        const ok= (eventTarget)=>eventTarget.closest(selector)||children.includes(eventTarget);
+        this.$target.addEventListener(eventType, (event)=>{
             if(!ok(event.target))return false;
             callback(event);
-        })
+        }, capture)
     }
 }

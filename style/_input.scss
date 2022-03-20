@@ -74,23 +74,17 @@
 }
 
 #popupWords{
-  display: none;
+  display: block;
   @include shared.width_height($width:384px, $height:328px);
   @include shared.absolute_zero($top:37px, $left:134px, $right:1px);
   border: 1px solid #ddd;
+  height:auto;
   z-index: 1;
   box-shadow: 0 4px 5px rgb(0 0 0 / 30%);
   overflow:hidden;
   background: #fff;
-  &:before{
-    content: '';
-    @include shared.absolute_zero($top:0, $right:0);
-    width: 199px;
-    height: 100%;
-    background: #fff;
-    border-left: 1px solid #ccc;
-  }
   #autoComplete{
+    padding: 20px 12px 6px 12px;
     h3{
       height: 11px;
       margin: 0 6px;
@@ -99,6 +93,23 @@
       border-bottom: 1px solid #ddd;
       font-size: 12px;
       position: relative;
+    }
+    .auto{
+      cursor: pointer;
+      height: 13px;
+      overflow: hidden;
+      white-space: nowrap;
+      font: normal 12px Tahoma;
+      color: #555;
+      top: 39px;
+      left: 0;
+      right: 0;
+      display: block;
+      padding: 0 0 16px 0;
+      >strong{
+        color: #008cff;
+        font-weight: bold;
+      }
     }
   }
 }

@@ -9,6 +9,9 @@
     @include shared.absolute_zero($left:50%, $top:0);
     margin-left: -960px;
     display:none;
+    &.selected{
+      display:block;
+    }
   }
   .selected-product {
     @extend %width_center;
@@ -33,10 +36,12 @@
         img{
           border-top: 1px solid #fff;
         }
-        span{
+        .product_thumbnail{
           @include shared.absolute_zero($top:0, $right:0,$left:0,$bottom:0);
-          border:1px solid;
-          border-color: #eee #fff;
+          border:1px solid #fff;
+          &.selected{
+            border:2px solid #4285f4;
+          }
         }
       }
     }
