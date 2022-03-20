@@ -8,9 +8,9 @@ export class Mainbanner extends Component{
     #current;
     #inited=false;
     #selected=0;
-    render(){this.$target.innerHTML=this.template();}
-    constructor(target,props) {
-        super(target,props);
+
+    constructor(el) {
+        super(el);
         requestAnimationFrame(()=>this.render())
     }
     template(){
@@ -31,8 +31,8 @@ export class Mainbanner extends Component{
         `
     }
     change(index){
-        const imgs = [...this.$target.querySelectorAll('.main_bg')];
-        const spans = [...this.$target.querySelectorAll('.product_thumbnail')];
+        const imgs = [...this.selectAll('.main_bg')];
+        const spans = [...this.selectAll('.product_thumbnail')];
         imgs[this.#selected].style.display='none';
         spans[this.#selected].style.border = '1px solid #fff';
         this.#selected= index;
@@ -49,7 +49,7 @@ export class Mainbanner extends Component{
             delay(100).then(()=>this.#inited=false)
         });
         const f = (time) => {
-            const spans = [...this.$target.querySelectorAll('.product_thumbnail')];
+            const spans = [...this.selectAll('.product_thumbnail')];
             if (time - this.#prev >= 3000) {
                 this.#prev = time;
                 this.change(this.#selected===spans.length-1? 0 :this.#selected+1);

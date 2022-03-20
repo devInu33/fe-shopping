@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9bd293d-a122-4e4f-b59c-168cad3b6f64" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/Diff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Autocomplete.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/express-server/server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/express-server/static/sources.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Component.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Mainbanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Mainbanner.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/SearchInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchInput.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/_banner.scss" beforeDir="false" afterPath="$PROJECT_DIR$/style/_banner.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/_input.scss" beforeDir="false" afterPath="$PROJECT_DIR$/style/_input.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
