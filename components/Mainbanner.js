@@ -8,13 +8,8 @@ export class Mainbanner extends Component{
     #current;
     #inited=false;
     #selected=0;
-
-    constructor(el) {
-        super(el);
-        requestAnimationFrame(()=>this.render())
-    }
     template(){
-        const {banner, sidebar} = store.state //json()
+        const {banner, sidebar} = store.state;
         const selected = this.#selected;
         return ` ${banner.map((img,idx)=>`<img class="main_bg ${idx===selected? "selected":""}" src="${img}" >`).join('')}     
         <div class="selected-product">

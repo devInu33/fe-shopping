@@ -5,6 +5,7 @@ export default class Component{
         this.#el = el;
         requestAnimationFrame(()=>{
             this.setEvent();
+            this.render();
         })
     }
     render(){this.#el.innerHTML=this.template();}

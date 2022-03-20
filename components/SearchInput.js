@@ -3,23 +3,23 @@ import {store} from "../Core/Store.js";
 import {Autocomplete} from "./Autocomplete.js";
 
 export class SearchInput extends Component {
-    static #recentItems = JSON.parse(localStorage.getItem('RECENT')) || [];
+    static #storageKey = Symbol.for('RECENT').toString()
+    static #recentItems = JSON.parse(localStorage.getItem(SearchInput.#storageKey)) || [];
     #visitor = new Autocomplete();
     #currentInput = "";
-    render(){}//상속받지 않기 위함
     template() {
         return `<form id="searchForm">
             <fieldset>
                 <legend>상품검색</legend>
-                <div className="searchForm">
-                    <div className="select-category">
-                        <a className="select-category__button"></a>
-                        <a className="select-category__current">전체</a>
+                <div class="searchForm">
+                    <div class="select-category">
+                        <a class="select-category__button"></a>
+                        <a class="select-category__current">전체</a>
                     </div>
                     <select id="searchCategories">
                     </select>
-                    <label htmlFor="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!"/></label>
-                    <a className="speech-mic"></a>
+                    <label htmlFor="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!" autocomplete="off"/></label>
+                    <a class="speech-mic"></a>
                 </div>
                 <a id="searchBtn"></a>
             </fieldset>
@@ -36,9 +36,9 @@ export class SearchInput extends Component {
                 </ol>
             </div>
         </div>
-        <div className="historyBtns">
-            <span className="deleteAll"></span>
-            <span className="historyonOff"></span>
+        <div class="historyBtns">
+            <span class="deleteAll"></span>
+            <span class="historyonOff"></span>
         </div>`;
     }
 
@@ -58,14 +58,14 @@ export class SearchInput extends Component {
         this.addEvent('keyup', '#searchKeyword', e => {
             this.#currentInput = e.target.value;
             if(this.#currentInput) {
-                const result = this.#visitor.autocomplete(this.#currentInput, `<strong>`, `</strong>`);
+                const result = this.#visitor.autocomplete(this.#currentInput);
                 this.select('#autoComplete').innerHTML = result;
             }
         })
         this.addEvent('submit', '#searchForm', e => {
             e.preventDefault();
             SearchInput.#recentItems.push(e.target.value);
-            localStorage.setItem('RECENT', JSON.stringify(SearchInput.#recentItems));
+            localStorage.setItem(SearchInput.#storageKey, JSON.stringify(SearchInput.#recentItems));
         })
     }
 }
