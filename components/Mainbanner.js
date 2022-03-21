@@ -6,7 +6,7 @@ import {store} from "../Core/Store.js";
 export class Mainbanner extends Component{
     #prev=performance.now();
     #current;
-    #inited=false;
+    #throttle=false;
     #selected=0;
     template(){
         const {banner, sidebar} = store.state;
@@ -30,29 +30,15 @@ export class Mainbanner extends Component{
         const spans = [...this.selectAll('.product_thumbnail')];
         imgs[this.#selected].style.display='none';
         spans[this.#selected].style.border = '1px solid #fff';
-        this.#selected= index;
+        this.#selected= index>=spans.length? 0: index;
         imgs[this.#selected].style.display='block';
         spans[this.#selected].style.border = '2px solid #4285f4';
     }
     setEvent() {
+        this.handler.startAuto(()=>this.change(this.#selected+1), 3000);
         this.addEvent('mouseover', 'span',(e) => {
-            if(this.#inited===true)return false;
-            this.#inited = true;
-            this.change(parseInt(e.target.dataset.idx));
-            cancelAnimationFrame(this.#current);
-            this.#current = requestAnimationFrame(f);
-            delay(100).then(()=>this.#inited=false)
-        });
-        const f = (time) => {
-            const spans = [...this.selectAll('.product_thumbnail')];
-            if (time - this.#prev >= 3000) {
-                this.#prev = time;
-                this.change(this.#selected===spans.length-1? 0 :this.#selected+1);
-            } else {
-                cancelAnimationFrame(this.#current);
-            }
-            this.#current = requestAnimationFrame(f);
-        }
-        this.#current = requestAnimationFrame(f)
+            this.handler.throttle(()=>this.change(parseInt(e.target.dataset.idx)),100);
+            this.handler.startAuto(()=>this.change(this.#selected+1), 3000);
+        }, 100);
     }
 }
