@@ -10,10 +10,9 @@ export class EventHandler{
     }
 
     debounce(fn){
-        return ()=>{
-            cancelAnimationFrame(this.#currentCallback);
-            this.#currentCallback = requestAnimationFrame(fn);
-        }
+        cancelAnimationFrame(this.#currentCallback);
+        this.#currentCallback = requestAnimationFrame(fn);
+
     }
     throttle(fn,time){
         if(this.#throttle===true)return false;

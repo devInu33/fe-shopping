@@ -6,15 +6,23 @@ import {Store} from "./Store.js";
 export default class View{
     #el;
     #handler= new EventHandler();
-    #model;
     #store =null;
     #willrender=true;
     parent;
     next=null;
     child=null;
-    constructor(el, parent=undefined) {
+    constructor(el, parent=undefined, ) {
         this.#el=el;
-        if(parent)parent.setChild(this)
+        if(parent){
+            parent.setChild(this)
+        }
+        this.render();
+    }
+    set store(v){
+        this.#store = v;
+    }
+    get state(){
+        return this.#store.state;
     }
     setChild(view){
         if(this.child)this.child.setNext(view)
@@ -31,15 +39,13 @@ export default class View{
         this.#willrender=true;
         this.#store.setState(newState)
     }
-    get state(){
-        return this.#store.state;
-    }
-    throttle(fn,time){this.#handler.throttle(fn,time);}
-    debounce(fn){this.#handler.debounce(fn);}
-    startAuto(fn,delay){this.#handler.startAuto(fn,delay())}
+
+    throttle=(fn,time)=>this.#handler.throttle(fn,time);
+    debounce= (fn)=>this.#handler.debounce(fn);
+    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay());
     initState(){return {}}
     render(){
-        console.log('hi');
+
         if(this.#willrender) {
             this.debounce(() => this.#el.innerHTML = this.template());
             this.#willrender=false;

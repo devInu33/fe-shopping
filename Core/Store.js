@@ -16,19 +16,20 @@ export class Store{
     #state;
     #head;
     #visitor= new ModelVisitor();
-    constructor(state={}, view=new App()) {
+    constructor(state={}, head) {
         this.#state = state;
-        this.#head = view;
-        this.addState(this.#head);
+        this.#head = head;
+        this.addState();
     }
     get state(){
+        console.log('hi')
         return this.#state;
     }
-    addState(view){
+    addState(){
         this.#visitor.visit((view)=>{
             this.#state={...this.#state, ...view.initState()}
+            view.store = this;
         }, this.#head);
-        this.#head.render();
     }
     setState(newState){
         this.#state = {...this.#state, ...newState}
