@@ -9,8 +9,10 @@
     @include shared.absolute_zero($left:50%, $top:0);
     margin-left: -960px;
     display:none;
+    border:1px solid #fff;
     &.selected{
       display:block;
+      border:2px solid #4285f4;
     }
   }
   .selected-product {

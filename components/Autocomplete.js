@@ -1,5 +1,9 @@
 import {store} from "../Core/Store.js";
 
+class Visitor{
+
+}
+
 export  class Autocomplete{
     #words=store.state['words'];
     constructor() {

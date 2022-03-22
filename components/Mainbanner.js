@@ -1,16 +1,19 @@
 
-import Component from "../Core/Component.js";
+
 import {delay} from "../util.js";
 import {store} from "../Core/Store.js";
+import {observable} from "../Core/observer";
+import View from "../Core/View.js";
+import {MyEvent} from "../Core/EventHandler";
 
-export class Mainbanner extends Component{
-    #prev=performance.now();
-    #current;
-    #throttle=false;
-    #selected=0;
+
+
+export class Mainbanner extends View{
+    initState() {
+        return {selected:0}
+    }
     template(){
-        const {banner, sidebar} = store.state;
-        const selected = this.#selected;
+        const {banner, sidebar,selected} = store.state;
         return ` ${banner.map((img,idx)=>`<img class="main_bg ${idx===selected? "selected":""}" src="${img}" >`).join('')}     
         <div class="selected-product">
             <div class="image-container">
@@ -25,20 +28,14 @@ export class Mainbanner extends Component{
         </div>
         `
     }
-    change(index){
-        const imgs = [...this.selectAll('.main_bg')];
-        const spans = [...this.selectAll('.product_thumbnail')];
-        imgs[this.#selected].style.display='none';
-        spans[this.#selected].style.border = '1px solid #fff';
-        this.#selected= index>=spans.length? 0: index;
-        imgs[this.#selected].style.display='block';
-        spans[this.#selected].style.border = '2px solid #4285f4';
-    }
     setEvent() {
-        this.handler.startAuto(()=>this.change(this.#selected+1), 3000);
+        const {selected} = store.state;
+        const spans = [...this.selectAll('.product_thumbnail')];
+        const auto = ()=>store.setState({selected:selected>spans.length-1? 0:selected+1})
+        this.startAuto(auto, 3000);
         this.addEvent('mouseover', 'span',(e) => {
-            this.handler.throttle(()=>this.change(parseInt(e.target.dataset.idx)),100);
-            this.handler.startAuto(()=>this.change(this.#selected+1), 3000);
+            this.throttle(()=>this.change(parseInt(e.target.dataset.idx)),100);
+            this.startAuto(auto, 3000);
         }, 100);
     }
 }

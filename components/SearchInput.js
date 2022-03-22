@@ -1,27 +1,15 @@
-import Component from "../Core/Component.js";
+
 import {store} from "../Core/Store.js";
 import {Autocomplete} from "./Autocomplete.js";
+import View from "../Core/View";
 
-export class SearchInput extends Component {
+export class SearchInput extends View {
     static #storageKey = Symbol.for('RECENT').toString()
-    static #recentItems = JSON.parse(localStorage.getItem(SearchInput.#storageKey)) || [];
-
-    #visitor = new Autocomplete();
-    #currentInput = "";
-    #recentTemplate=`<h3>
-               <span>최근 검색어</span>
-            </h3>
-            <ol>
-            ${SearchInput.#recentItems
-        .map((item,idx) => `<li data-idx=${idx}><a>${item}</a><span class="delete">삭제</span></li>`)
-        .join('')}
-            </ol>`;
-    setup(){}
-    constructor(el, input) {
-        super(el, input);
-        this.#currentInput = input;
+    initState() {
+        return {currentInput:"", recentItems:JSON.parse(localStorage.getItem(SearchInput.#storageKey)) || []}
     }
     template() {
+        const {currentInput, recentItems} = store.state;
         return `<form id="searchForm">
             <fieldset>
                 <legend>상품검색</legend>
@@ -40,7 +28,19 @@ export class SearchInput extends Component {
         </form>
         <div id="popupWords">
             <div id="autoComplete">
-               ${this.#recentTemplate}
+               ${currentInput? new Autocomplete().autocomplete(currentInput).reduce((acc, cur) => {
+                const [front, back] = cur.split(currentInput.trim());
+                acc += `<a class="auto">${front}<strong>${currentInput}</strong>${back}</a>`
+                return acc;
+            }, ""):
+            `<h3>
+                <span>최근 검색어</span>
+            </h3>
+        <ol>
+        ${recentItems
+        .map((item,idx) => `<li data-idx=${idx}><a>${item}</a><span class="delete">삭제</span></li>`)
+        .join('')}
+        </ol>`}
             </div>
         </div>
         <div class="historyBtns">
@@ -50,6 +50,7 @@ export class SearchInput extends Component {
     }
 
     setEvent() {
+        const {recentItems, currentInput} = store.state;
         this.addEvent('blur', '#searchKeyword', e => {
             this.select('#popupWords').style.display = 'none';
         }, true)
@@ -57,28 +58,18 @@ export class SearchInput extends Component {
             this.select('#popupWords').style.display = 'block';
         }, true)
         this.addEvent('keydown', '#searchKeyword', async e => {
-            if ([38, 40].includes(e.keyCode)) {
-
-            }
-            const keyword = e.target.value;
         })
         this.addEvent('keyup', '#searchKeyword', e => {
-            this.#currentInput = e.target.value;
-            const result = this.#visitor.autocomplete(this.#currentInput);
-            this.select('#autoComplete').innerHTML = result? result.reduce((acc, cur) => {
-                const [front, back] = cur.split(this.#currentInput.trim());
-                acc += `<a class="auto">${front}<strong>${this.#currentInput}</strong>${back}</a>`
-                return acc;
-            }, ""):this.#recentTemplate;
+            this.throttle(()=>this.setState({currentInput:e.target.value}), 500);
         })
         this.addEvent('submit', '#searchForm', e => {
             e.preventDefault();
-            SearchInput.#recentItems.unshift(this.#currentInput);
-            localStorage.setItem(SearchInput.#storageKey, JSON.stringify(SearchInput.#recentItems));
+            recentItems.unshift(currentInput);
+            localStorage.setItem(SearchInput.#storageKey, JSON.stringify(recentItems));
         });
         this.addEvent('click', '.delete', e=>{
-            SearchInput.#recentItems.splice(parseInt(e.target.dataset.idx), 1);
-            localStorage.setItem(SearchInput.#storageKey, JSON.stringify(SearchInput.#recentItems));
+            recentItems.splice(parseInt(e.target.dataset.idx), 1);
+            localStorage.setItem(SearchInput.#storageKey, JSON.stringify(recentItems));
         })
     }
 }

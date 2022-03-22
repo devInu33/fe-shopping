@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9bd293d-a122-4e4f-b59c-168cad3b6f64" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Core/observer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Component.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Diff.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Diff.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/View.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/EventHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/EventHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/observer.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/observer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Autocomplete.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Autocomplete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Mainbanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Mainbanner.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/SearchInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchInput.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/_input.scss" beforeDir="false" afterPath="$PROJECT_DIR$/style/_input.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/_banner.scss" beforeDir="false" afterPath="$PROJECT_DIR$/style/_banner.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,17 +59,17 @@
       <recent name="$PROJECT_DIR$/" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.Component.js">
+  <component name="RunManager" selected="JavaScript 디버그.index.html">
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/fe-shopping/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="Component.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/Core/Component.js" working-dir="$PROJECT_DIR$/Core">
+    <configuration name="View.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/Core/View.js" working-dir="$PROJECT_DIR$/Core">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Node.js.Component.js" />
         <item itemvalue="JavaScript 디버그.index.html" />
+        <item itemvalue="Node.js.View.js" />
       </list>
     </recent_temporary>
   </component>
@@ -90,7 +90,9 @@
       <workItem from="1647600766484" duration="206000" />
       <workItem from="1647600973495" duration="405000" />
       <workItem from="1647794373682" duration="2490000" />
-      <workItem from="1647826792807" duration="8806000" />
+      <workItem from="1647826792807" duration="29000000" />
+      <workItem from="1647863954716" duration="3153000" />
+      <workItem from="1647912789073" duration="6609000" />
     </task>
     <servers />
   </component>
