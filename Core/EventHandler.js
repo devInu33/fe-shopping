@@ -7,9 +7,9 @@ export class EventHandler{
     #target;
     #cache;
     constructor() {
-        this.#cache = time=>this.auto(time,fn,delay)
     }
-    debounce(fn, delay){
+
+    debounce(fn){
         return ()=>{
             cancelAnimationFrame(this.#currentCallback);
             this.#currentCallback = requestAnimationFrame(fn);
@@ -23,14 +23,14 @@ export class EventHandler{
     }
     startAuto(fn,delay){
         cancelAnimationFrame(this.#currentCallback);
-        this.#currentCallback = requestAnimationFrame(this.#cache)
+        this.#currentCallback = requestAnimationFrame(time=>this.auto(time,fn,delay))
     }
     auto= (time, fn,delay)=>{
         if(time-this.#prev>=delay){
             this.#prev=time;
             fn();
         }else{ cancelAnimationFrame(this.#currentCallback)}
-        this.#currentCallback = requestAnimationFrame(this.#cache)
+        this.#currentCallback = requestAnimationFrame(time=>this.auto(time,fn,delay))
     }
 }
 

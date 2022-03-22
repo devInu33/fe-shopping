@@ -1,4 +1,6 @@
-import {observable} from "./observer";
+import {ModelVisitor} from "./Visitor.js";
+import {App} from "../app.js";
+
 
 export const myFetch = async (key)=>{
     const url = `http://127.0.0.1:3000/${key}`
@@ -8,41 +10,34 @@ export const myFetch = async (key)=>{
         throw e;
     }
 }
- const sources = await myFetch('sources');
+
 
 export class Store{
     #state;
-    #currentObserver;
-    #currentCallback=-1;
-    state;
-    constructor(state={}, view) {
-        this.#state = observable(state);
+    #head;
+    #visitor= new ModelVisitor();
+    constructor(state={}, view=new App()) {
+        this.#state = state;
+        this.#head = view;
+        this.addState(this.#head);
     }
     get state(){
         return this.#state;
     }
-    debounce= (fn)=>{
-        return()=>{
-            cancelAnimationFrame(this.#currentCallback);
-            this.#currentCallback=requestAnimationFrame(fn);
-        }
-    }
-    observe(fn){
-        this.#currentObserver = this.debounce(fn);
-        fn();
-        this.#currentObserver = null;
-    }
-    addView(view){
-        this.#state = {...this.#state, ...view.initState()};
-        this.observe(()=>{
-            view.setEvent();
-            view.render();
-        })
+    addState(view){
+        this.#visitor.visit((view)=>{
+            this.#state={...this.#state, ...view.initState()}
+        }, this.#head);
+        this.#head.render();
     }
     setState(newState){
-        this.#state = {...this.#state, ...newState};
+        this.#state = {...this.#state, ...newState}
+        this.#head.render()
     }
 }
-export const store = new Store({
-    banners:sources.banners, sidebar:sources.sidebar, words:sources.words,
-})
+
+
+// view를 데코레이터 패턴으로 연결.
+// render() 호출 시, store에서 헤더에 view를 넘기고 연쇄 render()
+// 이 때 render를 하냐 마냐는 자신에게 상태변화가 일어났느냐 안일어났느냐에 따라결정
+// 인자로 this를 넘긴다? 좋지 않음. 전역 store를 언제 어디서 호출할지 모름.

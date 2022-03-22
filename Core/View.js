@@ -1,25 +1,55 @@
-import {observable} from "./observer.js";
+
 import {delay} from "../util.js";
 import {EventHandler} from "./EventHandler.js";
-import {Store, store} from "./Store";
+import {Store} from "./Store.js";
 
 export default class View{
     #el;
     #handler= new EventHandler();
     #model;
-    #events;
-    constructor( el) {
+    #store =null;
+    #willrender=true;
+    parent;
+    next=null;
+    child=null;
+    constructor(el, parent=undefined) {
         this.#el=el;
-        store.addView(this);
+        if(parent)parent.setChild(this)
+    }
+    setChild(view){
+        if(this.child)this.child.setNext(view)
+        else{this.child=view}
+        view.parent = this;
+        return this;
+    }
+    setNext(view){
+        let curr= this;
+        while(curr.next){curr = curr.next;}
+        curr.next = view;
+    }
+    setState(newState){
+        this.#willrender=true;
+        this.#store.setState(newState)
+    }
+    get state(){
+        return this.#store.state;
     }
     throttle(fn,time){this.#handler.throttle(fn,time);}
-    debounce(fn,delay){this.#handler.debounce(fn,delay);}
+    debounce(fn){this.#handler.debounce(fn);}
     startAuto(fn,delay){this.#handler.startAuto(fn,delay())}
-    initState(){}
-    render(){this.#el.innerHTML=this.template();}
+    initState(){return {}}
+    render(){
+        console.log('hi');
+        if(this.#willrender) {
+            this.debounce(() => this.#el.innerHTML = this.template());
+            this.#willrender=false;
+        }
+        if(this.next)this.next.render();
+        if(this.child)this.child.render();
+    }
+
     template(){return ``}
     setEvent(){}
-
     addEvent (eventType,selector,callback, capture=false){
         const children = [...this.#el.querySelectorAll(selector)];
         const ok= (eventTarget)=>eventTarget.closest(selector)||children.includes(eventTarget);
@@ -28,9 +58,8 @@ export default class View{
             callback(event);
         }, capture)
     }
-    select(selector){return this.#el.querySelector(selector);}
+    select(selector){return selector?this.#el.querySelector(selector):this.#el;}
     selectAll(selector){return this.#el.querySelectorAll(selector);}
-
 }
 
 
