@@ -4,15 +4,11 @@ export class EventHandler{
     #throttle;
     #currentCallback=-1;
     #prev=performance.now();
-    #target;
-    #cache;
-    constructor() {
-    }
 
     debounce(fn){
+        console.log(fn);
         cancelAnimationFrame(this.#currentCallback);
         this.#currentCallback = requestAnimationFrame(fn);
-
     }
     throttle(fn,time){
         if(this.#throttle===true)return false;

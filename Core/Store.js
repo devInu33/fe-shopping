@@ -3,14 +3,6 @@ import {App} from "../app.js";
 import {EventHandler} from "./EventHandler.js   ";
 
 
-export const myFetch = async (key)=>{
-    const url = `http://127.0.0.1:3000/${key}`
-    try {
-        return await (await fetch(url)).json();
-    }catch(e){
-        throw e;
-    }
-}
 
 
 export class Store{
@@ -21,26 +13,20 @@ export class Store{
     constructor( head,visitor) {
         this.#head = head;
         this.#visitor= visitor;
-        this.addState();
+
     }
     getState(view){
         return this.#state.get(view);
     }
-    throttle=(fn,time)=>this.#handler.throttle(fn,time);
-    debounce= (fn)=>this.#handler.debounce(fn);
-    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay);
-    addState(){
-        this.#visitor.visit((view)=>{
-            this.#state.set(view, view.initState())
-            // this.#state={...this.#state, ...view.initState()};
-            view.store = this;
-        }, this.#head);
-        this.#head.render();
+    addState(view){
+        if(this.#state.has(view))return
+        this.#state.set(view, view.initState());
+        view.render();
     }
     setState(newState, view){
         const oldstate =this.#state.get(view);
         this.#state.set(view, {...oldstate,...newState});
-        this.#handler.debounce(()=>this.#head.render());
+        this.#head.render()
     }
 }
 

@@ -2,26 +2,29 @@
 import {delay} from "../util.js";
 import {EventHandler} from "./EventHandler.js";
 import {Store} from "./Store.js";
+import {ModelVisitor} from "./Visitor.js";
 
 export default class View{
     #el;
     #handler= new EventHandler();
     #store =null;
-    #willrender=true;
-    parent;
+    #willRender=true;
+    parent=null;
     next=null;
     child=null;
-    constructor(el, parent=undefined, ) {
+    constructor(el, parent=undefined ) {
         this.#el=el;
-        if(parent){
-            parent.setChild(this)
-        }
+        // console.log(this.#el);
+        parent? parent.setChild(this):this.store = new Store(this,new ModelVisitor())
+        this.#store.addState(this);
     }
-
+    initStore(){
+        this.#store.addState()
+    }
     setChild(view){
-        if(this.child)this.child.setNext(view)
-        else{this.child=view}
+        this.child?this.child.setNext(view):this.child=view
         view.parent = this;
+        view.store = this.#store;
         return this;
     }
     setNext(view){
@@ -30,25 +33,27 @@ export default class View{
         curr.next = view;
     }
     setState(newState){
-        this.#willrender=true;
+        this.#willRender=true;
         this.#store.setState(newState, this)
     }
     set store(v){
         this.#store = v;
+
     }
     get state(){
         return this.#store.getState(this);
     }
-    throttle=(fn,time)=>this.#store.throttle(fn,time);
-    debounce= (fn)=>this.#store.debounce(fn);
-    startAuto=(fn,delay)=>this.#store.startAuto(fn,delay);
+    throttle=(fn,time)=>this.#handler.throttle(fn,time);
+    debounce= (fn)=>this.#handler.debounce(fn);
+    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay);
     initState(){return {}}
+    mount(){}
     render(){
-
-        if(this.#willrender) {
-            this.#el.innerHTML = this.template();
-            console.log(this.template());
-            this.#willrender=false;
+        if(this.#willRender) {
+            this.#handler.debounce(()=>{
+                this.#el.innerHTML = this.template()
+            });
+            this.#willRender=false;
         }
         if(this.next)this.next.render();
         if(this.child)this.child.render();
