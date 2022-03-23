@@ -17,19 +17,16 @@ export default class View{
             this.#store = store;
             this.#store.addView(this)
         }
-        if(parent){
+        if(parent) {
             parent.setChild(this)
-            this.#el= parent.select(selector)
-        }else{
-            this.#el= document.querySelector(selector)
         }
-        console.log(this.#el);
+        this.#el = parent? parent.select(selector):document.querySelector(selector);
+        this.setEvent();
         this.render();
     }
     setChild(view){
         this.child?this.child.setNext(view):this.child=view
         view.parent = this;
-        return this;
     }
     setNext(view){
         let curr= this;
@@ -43,19 +40,14 @@ export default class View{
     get state(){
         return this.#store.getState(this);
     }
-    set store(v){
-        this.#store = v;
-    }
 
-    throttle=(fn,time)=>this.#handler.throttle(fn,time);
-    debounce= (fn)=>this.#handler.debounce(fn);
-    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay);
+    throttle(fn,time){this.#handler.throttle(fn,time)}
+    debounce(fn){this.#handler.debounce(fn);}
+    startAuto(fn,delay){this.#handler.startAuto(fn,delay);}
     initState(){return {}}
     render(){
         if(this.#willRender) {
-            this.#handler.debounce(()=>{
-                this.#el.innerHTML = this.template()
-            });
+            this.#el.innerHTML = this.template()
             this.#willRender=false;
         }
         if(this.next)this.next.render();
@@ -72,7 +64,7 @@ export default class View{
             callback(event);
         }, capture)
     }
-    select(selector){return selector?this.#el.querySelector(selector):this.#el;}
+    select(selector){return this.#el.querySelector(selector)}
     selectAll(selector){return this.#el.querySelectorAll(selector);}
 }
 

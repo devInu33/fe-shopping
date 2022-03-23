@@ -11,12 +11,14 @@ export class EventHandler{
         this.#currentCallback = requestAnimationFrame(fn);
     }
     throttle(fn,time){
+        console.log(fn);
         if(this.#throttle===true)return false;
         this.#throttle = true;
         fn();
         delay(time).then(()=>this.#throttle=false)
     }
     startAuto(fn,delay){
+        console.log(fn);
         cancelAnimationFrame(this.#currentCallback);
         this.#currentCallback = requestAnimationFrame(time=>this.auto(time,fn,delay))
     }

@@ -29,7 +29,7 @@ export class Store{
     setState(newState, view){
         const oldstate =this.#state.get(view);
         this.#state.set(view, {...oldstate,...newState});
-        this.#head.render()
+        this.#head.render();
     }
 }
 
