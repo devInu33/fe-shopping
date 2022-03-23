@@ -3,6 +3,10 @@ import {App} from "../app.js";
 import {EventHandler} from "./EventHandler.js   ";
 
 
+// 렌더링하려면
+// 1.store가 생성되어 있어함
+// 2. 부모가 렌더링 되어 있어야함.
+// 마운트를 해야하는 타이밍
 
 
 export class Store{
@@ -10,18 +14,17 @@ export class Store{
     #head;
     #visitor;
     #handler = new EventHandler();
-    constructor( head,visitor) {
-        this.#head = head;
-        this.#visitor= visitor;
 
+    constructor(visitor) {
+        this.#visitor= visitor;
     }
     getState(view){
         return this.#state.get(view);
     }
-    addState(view){
+    addView(view){
+        if(!this.#head)this.#head = view;
         if(this.#state.has(view))return
         this.#state.set(view, view.initState());
-        view.render();
     }
     setState(newState, view){
         const oldstate =this.#state.get(view);

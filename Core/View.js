@@ -9,22 +9,26 @@ export default class View{
     #handler= new EventHandler();
     #store =null;
     #willRender=true;
-    parent=null;
+    parent;
     next=null;
     child=null;
-    constructor(el, parent=undefined ) {
-        this.#el=el;
-        // console.log(this.#el);
-        parent? parent.setChild(this):this.store = new Store(this,new ModelVisitor())
-        this.#store.addState(this);
-    }
-    initStore(){
-        this.#store.addState()
+    constructor( store=undefined, selector=undefined ,parent=undefined,) {
+        if(store){
+            this.#store = store;
+            this.#store.addView(this)
+        }
+        if(parent){
+            parent.setChild(this)
+            this.#el= parent.select(selector)
+        }else{
+            this.#el= document.querySelector(selector)
+        }
+        console.log(this.#el);
+        this.render();
     }
     setChild(view){
         this.child?this.child.setNext(view):this.child=view
         view.parent = this;
-        view.store = this.#store;
         return this;
     }
     setNext(view){
@@ -36,18 +40,17 @@ export default class View{
         this.#willRender=true;
         this.#store.setState(newState, this)
     }
-    set store(v){
-        this.#store = v;
-
-    }
     get state(){
         return this.#store.getState(this);
     }
+    set store(v){
+        this.#store = v;
+    }
+
     throttle=(fn,time)=>this.#handler.throttle(fn,time);
     debounce= (fn)=>this.#handler.debounce(fn);
     startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay);
     initState(){return {}}
-    mount(){}
     render(){
         if(this.#willRender) {
             this.#handler.debounce(()=>{

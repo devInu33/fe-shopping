@@ -8,7 +8,6 @@ import {ModelVisitor} from "./Core/Visitor.js";
 
 export class App extends View{
     template() {
-        const {inputFocus} = this.state;
        return `<div class="header">
             <article class="top-bar">
                 <section>
@@ -67,12 +66,16 @@ export class App extends View{
             <article></article>
         </section>`
     }
+
+
 }
 
-const app = new App(document.body, undefined)
 
-new Mainbanner(app.select('.banner'),app);
-new SearchPopup(app.select('.product-search'), app)
+const store = new Store(new ModelVisitor())
+const app=new App(store,'body');
+new Mainbanner(store, '.banner', app);
+new SearchPopup(store, '.product-search',app);
+
 
 
 
