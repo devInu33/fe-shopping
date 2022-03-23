@@ -16,14 +16,8 @@ export default class View{
         if(parent){
             parent.setChild(this)
         }
-        this.render();
     }
-    set store(v){
-        this.#store = v;
-    }
-    get state(){
-        return this.#store.state;
-    }
+
     setChild(view){
         if(this.child)this.child.setNext(view)
         else{this.child=view}
@@ -37,17 +31,22 @@ export default class View{
     }
     setState(newState){
         this.#willrender=true;
-        this.#store.setState(newState)
+        this.#store.setState(newState, this)
     }
-
-    throttle=(fn,time)=>this.#handler.throttle(fn,time);
-    debounce= (fn)=>this.#handler.debounce(fn);
-    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay());
+    set store(v){
+        this.#store = v;
+    }
+    get state(){
+        return this.#store.getState(this);
+    }
+    throttle=(fn,time)=>this.#store.throttle(fn,time);
+    debounce= (fn)=>this.#store.debounce(fn);
+    startAuto=(fn,delay)=>this.#store.startAuto(fn,delay);
     initState(){return {}}
     render(){
 
         if(this.#willrender) {
-            this.debounce(() => this.#el.innerHTML = this.template());
+            this.#el.innerHTML = this.template();
             this.#willrender=false;
         }
         if(this.next)this.next.render();

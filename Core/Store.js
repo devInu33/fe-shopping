@@ -1,5 +1,6 @@
 import {ModelVisitor} from "./Visitor.js";
 import {App} from "../app.js";
+import {EventHandler} from "./EventHandler.js   ";
 
 
 export const myFetch = async (key)=>{
@@ -13,27 +14,32 @@ export const myFetch = async (key)=>{
 
 
 export class Store{
-    #state;
+    #state= new Map;
     #head;
     #visitor= new ModelVisitor();
-    constructor(state={}, head) {
-        this.#state = state;
+    #handler = new EventHandler();
+    constructor( head) {
         this.#head = head;
         this.addState();
     }
-    get state(){
-        console.log('hi')
-        return this.#state;
+    getState(view){
+        return this.#state.get(view);
     }
+    throttle=(fn,time)=>this.#handler.throttle(fn,time);
+    debounce= (fn)=>this.#handler.debounce(fn);
+    startAuto=(fn,delay)=>this.#handler.startAuto(fn,delay);
     addState(){
         this.#visitor.visit((view)=>{
-            this.#state={...this.#state, ...view.initState()}
+            this.#state.set(view, view.initState())
+            // this.#state={...this.#state, ...view.initState()};
             view.store = this;
         }, this.#head);
+        this.#head.render();
     }
-    setState(newState){
-        this.#state = {...this.#state, ...newState}
-        this.#head.render()
+    setState(newState, view){
+        const oldstate =this.#state.get(view);
+        this.#state.set(view, {...oldstate,...newState});
+        this.#handler.debounce(()=>this.#head.render());
     }
 }
 

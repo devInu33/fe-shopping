@@ -12,7 +12,7 @@ export class Mainbanner extends View{
         return {selected:0}
     }
     template(){
-        const {banner, sidebar,selected} = this.state;
+        const {banner, sidebar,selected} = store.state;
         return ` ${banner.map((img,idx)=>`<img class="main_bg ${idx===selected? "selected":""}" src="${img}" >`).join('')}     
         <div class="selected-product">
             <div class="image-container">
