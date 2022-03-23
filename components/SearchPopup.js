@@ -30,7 +30,7 @@ export class SearchPopup extends View {
                     </div>
                     <a id="searchBtn"></a>
                 </fieldset>
-                <div id="popupWords" style=${inputFocus ? "display:block" : "display:none"}>
+                <div id="popupWords" style=${inputFocus ? "display:block;" : "display:none;"}>
               </form>    
             <div id="autoComplete">
                ${currentInput ? words.filter(word => word.includes(currentInput)).reduce((acc, cur) => {
@@ -57,6 +57,7 @@ export class SearchPopup extends View {
 
     setEvent() {
         const {recentItems, currentInput, inputFocus} = this.state;
+        const newItems = [...recentItems];
         this.addEvent('blur', '#searchKeyword', e => {
             this.setState({inputFocus: false})
         }, true)
@@ -70,12 +71,14 @@ export class SearchPopup extends View {
         })
         this.addEvent('submit', '#searchForm', e => {
             e.preventDefault();
-            recentItems.unshift(currentInput);
+            newItems.unshift(currentInput)
             localStorage.setItem(SearchPopup.#storageKey, JSON.stringify(recentItems));
+            this.setState({recentItems:newItems})
         });
         this.addEvent('click', '.delete', e => {
-            recentItems.splice(parseInt(e.target.dataset.idx), 1);
+            newItems.splice(parseInt(e.target.dataset.idx), 1);
             localStorage.setItem(SearchPopup.#storageKey, JSON.stringify(recentItems));
+            this.setState({recentItems:newItems})
         })
     }
 }

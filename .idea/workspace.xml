@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9bd293d-a122-4e4f-b59c-168cad3b6f64" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/EventHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/EventHandler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/View.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SearchPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchPopup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/express-server/server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/express-server/static/sources.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +93,7 @@
       <workItem from="1647912789073" duration="29227000" />
       <workItem from="1647962751990" duration="2047000" />
       <workItem from="1647968260374" duration="1996000" />
-      <workItem from="1647995447042" duration="24848000" />
+      <workItem from="1647995447042" duration="26669000" />
     </task>
     <servers />
   </component>

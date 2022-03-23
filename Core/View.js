@@ -23,6 +23,7 @@ export default class View{
         this.#el = parent? parent.select(selector):document.querySelector(selector);
         this.setEvent();
         this.render();
+
     }
     setChild(view){
         this.child?this.child.setNext(view):this.child=view
