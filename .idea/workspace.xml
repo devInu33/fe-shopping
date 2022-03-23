@@ -8,6 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/Core/View.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Mainbanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Mainbanner.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +92,7 @@
       <workItem from="1647912789073" duration="29227000" />
       <workItem from="1647962751990" duration="2047000" />
       <workItem from="1647968260374" duration="1996000" />
-      <workItem from="1647995447042" duration="595000" />
+      <workItem from="1647995447042" duration="1938000" />
     </task>
     <servers />
   </component>

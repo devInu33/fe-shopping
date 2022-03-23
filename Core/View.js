@@ -47,6 +47,7 @@ export default class View{
 
         if(this.#willrender) {
             this.#el.innerHTML = this.template();
+            console.log(this.template());
             this.#willrender=false;
         }
         if(this.next)this.next.render();

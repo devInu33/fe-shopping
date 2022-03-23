@@ -3,16 +3,18 @@
 
 
 import View from "../Core/View.js";
+import {myFetch} from "../Core/Store.js";
 
 
 
 
 export class Mainbanner extends View{
-    initState() {
-        return {selected:0}
+    async initState() {
+        const sources = await myFetch('sources');
+        return {selected:0, banner:sources.banner, sidebar:sources.sidebar, words:sources.words,}
     }
     template(){
-        const {banner, sidebar,selected} = store.state;
+        const {banner, sidebar,selected} = this.state;
         return ` ${banner.map((img,idx)=>`<img class="main_bg ${idx===selected? "selected":""}" src="${img}" >`).join('')}     
         <div class="selected-product">
             <div class="image-container">

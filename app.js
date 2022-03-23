@@ -1,13 +1,14 @@
 import {Mainbanner} from "./components/Mainbanner.js";
 import {SearchPopup} from "./components/SearchPopup.js";
 import View from "./Core/View.js";
-import {myFetch, Store} from "./Core/Store.js   ";
+import {myFetch, Store} from "./Core/Store.js";
+import {ModelVisitor} from "./Core/Visitor.js";
 
 
 
 export class App extends View{
     template() {
-        `<div className="header">
+       return `<div className="header">
             <article className="top-bar">
                 <section>
                     <menu id="subscriberMenu">
@@ -69,12 +70,9 @@ export class App extends View{
 
 const app = new App(document.body)
 
-const sources = await myFetch('sources');
-new SearchPopup(document.querySelector(".product-search"),app);
-new Mainbanner(document.querySelector("section.banner"), app);
-export const store = new Store({
-    banner:sources.banner, sidebar:sources.sidebar, words:sources.words,
-}, app)
+
+
+export const store = new Store( app, new ModelVisitor());
 
 
 

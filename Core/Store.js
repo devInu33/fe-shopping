@@ -14,12 +14,13 @@ export const myFetch = async (key)=>{
 
 
 export class Store{
-    #state= new Map;
+    #state= new WeakMap ;
     #head;
-    #visitor= new ModelVisitor();
+    #visitor;
     #handler = new EventHandler();
-    constructor( head) {
+    constructor( head,visitor) {
         this.#head = head;
+        this.#visitor= visitor;
         this.addState();
     }
     getState(view){
