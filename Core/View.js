@@ -12,17 +12,17 @@ export default class View {
   next = null;
   child = null;
 
-  constructor(store, selector = undefined, parent = undefined) {
+  constructor(store, el, parent = undefined) {
     if (store) {
       this.#store = store;
       this.#store.addView(this);
     }
     if (parent) parent.setChild(this);
-    this.#el = parent
-      ? parent.select(selector)
-      : document.querySelector(selector);
-    this.setEvent();
-    this.render();
+    requestAnimationFrame(() => {
+      this.#el = el;
+      this.setEvent();
+      this.render();
+    });
   }
 
   setChild(view) {
@@ -38,8 +38,12 @@ export default class View {
     curr.next = view;
   }
 
-  setState(newState) {
+  willRender() {
     this.#willRender = true;
+  }
+
+  setState(newState) {
+    this.willRender();
     this.#store.setState(newState, this);
   }
 
@@ -64,12 +68,7 @@ export default class View {
   }
 
   render() {
-    if (this.#willRender) {
-      this.#el.innerHTML = this.template();
-      this.#willRender = false;
-    }
-    if (this.next) this.next.render();
-    if (this.child) this.child.render();
+    this.#el.innerHTML = this.template();
   }
 
   template() {

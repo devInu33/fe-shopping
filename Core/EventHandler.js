@@ -1,15 +1,19 @@
 import { delay } from "../util.js";
 
 export class EventHandler {
+  #currentObserver = null;
   #throttle;
-  #currentCallback = -1;
+  #autoCallback = -1;
   #prev = performance.now();
 
   debounce(fn) {
-    cancelAnimationFrame(this.#currentCallback);
-    this.#currentCallback = requestAnimationFrame(fn);
+    //dbounce요청은 debounce 요청끼리만 debounce 되도록 람다로
+    let currentCallback = -1;
+    return (() => {
+      cancelAnimationFrame(currentCallback);
+      currentCallback = requestAnimationFrame(fn);
+    })();
   }
-
   throttle(fn, time) {
     if (this.#throttle === true) return false;
     this.#throttle = true;
@@ -18,19 +22,21 @@ export class EventHandler {
   }
 
   startAuto(fn, delay) {
-    cancelAnimationFrame(this.#currentCallback);
-    this.#currentCallback = requestAnimationFrame((time) =>
+    cancelAnimationFrame(this.#autoCallback);
+    this.#autoCallback = requestAnimationFrame((time) =>
       this.auto(time, fn, delay)
     );
   }
 
-  auto = (time, fn, delay) => {
+  auto(time, fn, delay) {
     if (time - this.#prev >= delay) {
       this.#prev = time;
       fn();
+    } else {
+      cancelAnimationFrame(this.#autoCallback);
     }
-    this.#currentCallback = requestAnimationFrame((time) =>
+    this.#autoCallback = requestAnimationFrame((time) =>
       this.auto(time, fn, delay)
     );
-  };
+  }
 }

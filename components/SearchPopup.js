@@ -10,11 +10,12 @@ export class SearchPopup extends View {
       recentItems:
         JSON.parse(localStorage.getItem(SearchPopup.#storageKey)) || [],
       words: sources.words,
+      inputFocus: false,
     };
   }
 
   template() {
-    const { currentInput, recentItems, words } = this.state;
+    const { inputFocus, currentInput, recentItems, words } = this.state;
     return `
         <form id="searchForm">                   
            <fieldset>
@@ -26,17 +27,20 @@ export class SearchPopup extends View {
                         </div>
                         <select id="searchCategories">
                         </select>
+                        
                         <label htmlFor="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!"
                                                              autoComplete="off"/></label>
                         <a class="speech-mic"></a>
                     </div>
                     <a id="searchBtn"></a>
                 </fieldset>
-                <div id="popupWords">
+                <div id="popupWords" style=${
+                  inputFocus ? "display:block" : "display:none"
+                }>
               </form>    
             <div id="autoComplete">
                ${
-                 currentInput
+                 currentInput.length
                    ? words
                        .filter((word) => word.includes(currentInput))
                        .reduce((acc, cur) => {
@@ -66,45 +70,52 @@ export class SearchPopup extends View {
   }
 
   setEvent() {
-    const { inputFocus, recentItems, currentInput } = this.state;
-    const newItems = [...recentItems];
+    this.select("#searchKeyword").addEventListener("focusout", (e) => {
+      this.state.inputFocus = false;
+    });
+    // this.addEvent(
+    //   "focusout",
+    //   "#searchKeyword",
+    //   (e) => {
+    //     console.log(e.target.id);
+    //     this.state.inputFocus = false;
+    //   },
+    //   true
+    // );
+
     this.addEvent(
-      "blur",
+      "focusin",
       "#searchKeyword",
       (e) => {
-        this.select("#popupWords").style.display = "none";
+        this.state.inputFocus = true;
       },
       true
     );
-
-    this.addEvent("focusin", "#searchKeyword", (e) => {
-      this.select("#popupWords").style.display = "block";
-    });
 
     this.addEvent("keydown", "#searchKeyword", () => {});
 
     this.addEvent("input", "#searchKeyword", (e) => {
       console.log(e.target.value);
-      this.setState({ currentInput: e.target.value });
+      this.state.currentInput = e.target.value;
     });
 
     this.addEvent("submit", "#searchForm", (e) => {
       e.preventDefault();
-
+      const { currentInput, recentItems } = this.state;
+      const newItems = [...recentItems];
       newItems.unshift(currentInput);
-      localStorage.setItem(
-        SearchPopup.#storageKey,
-        JSON.stringify(recentItems)
-      );
-      this.setState({ recentItems: newItems });
+      localStorage.setItem(SearchPopup.#storageKey);
+      this.state.recentItems = newItems;
     });
     this.addEvent("click", ".delete", (e) => {
+      const { recentItems } = this.state;
+      const newItems = [...recentItems];
       newItems.splice(parseInt(e.target.dataset.idx), 1);
       localStorage.setItem(
         SearchPopup.#storageKey,
         JSON.stringify(recentItems)
       );
-      this.setState({ recentItems: newItems });
+      this.state.recentItems = newItems;
     });
   }
 }

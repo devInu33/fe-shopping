@@ -43,16 +43,17 @@ export class Mainbanner extends View {
   }
 
   setEvent() {
-    const { selected } = this.state;
+    const selected = this.state.selected;
     const auto = () =>
-      this.setState({ selected: selected === 5 ? 0 : selected + 1 });
+      selected === 5 ? (this.state.selected = 0) : (this.state.selected += 1);
+
     this.startAuto(auto, 3000);
     this.addEvent(
       "mouseover",
       "span",
       (e) => {
         this.throttle(
-          () => this.setState({ selected: parseInt(e.target.dataset.idx) }),
+          () => (this.state.selected = parseInt(e.target.dataset.idx)),
           100
         );
         this.startAuto(auto, 3000);
