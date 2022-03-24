@@ -10,6 +10,9 @@ export class Mainbanner extends View {
       words: sources.words,
     };
   }
+  #spans = () => [...this.selectAll(".product_thumbnail")];
+  #images = () => [...this.selectAll(".main_bg")];
+  #idx = 0;
 
   template() {
     const { banner, sidebar, selected } = this.state;
@@ -41,21 +44,25 @@ export class Mainbanner extends View {
         </div>
         `;
   }
-
+  change(index) {
+    const spans = this.#spans();
+    const imgs = this.#images();
+    spans[this.#idx].classList.remove("selected");
+    imgs[this.#idx].classList.remove("selected");
+    this.#idx = index;
+    spans[this.#idx].classList.add("selected");
+    imgs[this.#idx].classList.add("selected");
+  }
   setEvent() {
-    const selected = this.state.selected;
     const auto = () =>
-      selected === 5 ? (this.state.selected = 0) : (this.state.selected += 1);
+      this.#idx === 5 ? this.change(0) : this.change(this.#idx + 1);
 
     this.startAuto(auto, 3000);
     this.addEvent(
       "mouseover",
       "span",
       (e) => {
-        this.throttle(
-          () => (this.state.selected = parseInt(e.target.dataset.idx)),
-          100
-        );
+        this.throttle(() => this.change(parseInt(e.target.dataset.idx)), 100);
         this.startAuto(auto, 3000);
       },
       100

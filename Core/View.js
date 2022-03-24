@@ -12,14 +12,16 @@ export default class View {
   next = null;
   child = null;
 
-  constructor(store, el, parent = undefined) {
+  constructor(store, selector, parent = undefined) {
     if (store) {
       this.#store = store;
       this.#store.addView(this);
     }
     if (parent) parent.setChild(this);
     requestAnimationFrame(() => {
-      this.#el = el;
+      this.#el = parent
+        ? parent.select(selector)
+        : document.querySelector(selector);
       this.setEvent();
       this.render();
     });
@@ -38,12 +40,7 @@ export default class View {
     curr.next = view;
   }
 
-  willRender() {
-    this.#willRender = true;
-  }
-
   setState(newState) {
-    this.willRender();
     this.#store.setState(newState, this);
   }
 

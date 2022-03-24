@@ -22,6 +22,7 @@ export class Store {
     if (this.#state.has(view)) return;
     const state = view.initState();
     const isProxy = Symbol("isProxy");
+    const noRender = Symbol("noRender");
     const handler = {
       get: (target, name, receiver) => {
         if (name === isProxy) return true;
@@ -33,16 +34,17 @@ export class Store {
       },
       set: (target, name, value) => {
         if (target[name] == value) return true;
+        console.log(name);
         Reflect.set(target, name, value);
-        view.render();
+        if (name != noRender) {
+          this.#handler.debounce(() => view.render());
+        }
         return true;
       },
     };
     this.#state.set(view, new Proxy(state, handler));
   }
-  setState(newState, view) {
-    console.log(newState);
-    this.#state.set(view, { ...this.#state.get(view), ...newState });
-    this.#handler.debounce(() => this.#head.render());
+  setState(newState, view, render) {
+    this.#state.get(view).this.#handler.debounce(() => this.#head.render());
   }
 }

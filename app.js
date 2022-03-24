@@ -67,6 +67,6 @@ export class App extends View {
 }
 
 const store = new Store(new ModelVisitor());
-const app = new App(store, document.body);
-new Mainbanner(store, app.select(".banner"), app);
-new SearchPopup(store, app.select(".product-search"), app);
+const app = new App(store, "body");
+new Mainbanner(store, ".banner", app);
+new SearchPopup(store, ".product-search", app);

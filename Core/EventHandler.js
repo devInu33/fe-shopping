@@ -1,5 +1,19 @@
 import { delay } from "../util.js";
 
+export class EventHandle {
+  callback = -1;
+  fn;
+  constructor(fn) {
+    this.fn = fn;
+  }
+}
+export class Debounce extends EventHandle {
+  debounce() {
+    cancelAnimationFrame(this.callback);
+    this.callback = requestAnimationFrame(this.fn);
+  }
+}
+
 export class EventHandler {
   #currentObserver = null;
   #throttle;
