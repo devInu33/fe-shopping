@@ -7,12 +7,15 @@ export class EventHandle {
     this.fn = fn;
   }
 }
+
+
 export class Debounce extends EventHandle {
   debounce() {
     cancelAnimationFrame(this.callback);
     this.callback = requestAnimationFrame(this.fn);
   }
 }
+
 
 export class EventHandler {
   #currentObserver = null;
@@ -21,7 +24,6 @@ export class EventHandler {
   #prev = performance.now();
 
   debounce(fn) {
-    //dbounce요청은 debounce 요청끼리만 debounce 되도록 람다로
     let currentCallback = -1;
     return (() => {
       cancelAnimationFrame(currentCallback);

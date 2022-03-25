@@ -1,10 +1,13 @@
 import { Mainbanner } from "./components/Mainbanner.js";
-import { SearchPopup } from "./components/SearchPopup.js";
+
 import View from "./Core/View.js";
 import { Store } from "./Core/Store.js";
 import { ModelVisitor } from "./Core/Visitor.js";
+import {SearchForm} from "./components/SearchForm.js";
+
 
 export class App extends View {
+
   template() {
     return `<div class="header">
             <article class="top-bar">
@@ -64,9 +67,12 @@ export class App extends View {
             <article></article>
         </section>`;
   }
+  mount(){
+    new Mainbanner(store, this.select(".banner"), this);
+    new SearchForm(store, this.select(".product-search"), this);
+  }
 }
 
-const store = new Store(new ModelVisitor());
-const app = new App(store, "body");
-new Mainbanner(store, ".banner", app);
-new SearchPopup(store, ".product-search", app);
+const store = new Store();
+const app = new App(store, document.body);
+
