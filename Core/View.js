@@ -16,7 +16,6 @@ export default class View {
 
     this.store = store;
     this.store.addView(this);
-      // if (parent) parent.setChild(this);
     this.#el = el
     requestAnimationFrame(()=>{
       this.setup();
@@ -28,7 +27,6 @@ export default class View {
 
   setState(newState) {
     this.#state = {...this.#state, ...newState};
-    console.log('hi');
     this.render();
   }
   initState(){

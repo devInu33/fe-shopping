@@ -9,7 +9,6 @@ export class SearchPopup extends View {
 
     template() {
         const {currentInput, recentItems, words} = this.store.state
-        console.log(currentInput,recentItems)
         return `
                 <div id="autoComplete">
                 ${currentInput.length ? words
@@ -29,9 +28,9 @@ export class SearchPopup extends View {
                         (item, idx) =>
                             `<li data-idx=${idx}><a>${item}</a><span class="delete">삭제</span></li>`
                     )
-                    .join("")}
-        </ol> `}
-            < /div>`
+                    .join('')}
+        </ol> `}`
+
 
     }
 

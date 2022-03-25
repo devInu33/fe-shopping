@@ -1,24 +1,9 @@
 import { delay } from "../util.js";
 
-export class EventHandle {
-  callback = -1;
-  fn;
-  constructor(fn) {
-    this.fn = fn;
-  }
-}
 
-
-export class Debounce extends EventHandle {
-  debounce() {
-    cancelAnimationFrame(this.callback);
-    this.callback = requestAnimationFrame(this.fn);
-  }
-}
 
 
 export class EventHandler {
-  #currentObserver = null;
   #throttle;
   #autoCallback = -1;
   #prev = performance.now();
@@ -40,11 +25,11 @@ export class EventHandler {
   startAuto(fn, delay) {
     cancelAnimationFrame(this.#autoCallback);
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.auto(time, fn, delay)
+      this.autoInterrupt(time, fn, delay)
     );
   }
 
-  auto(time, fn, delay) {
+  autoInterrupt(time, fn, delay) {
     if (time - this.#prev >= delay) {
       this.#prev = time;
       fn();
@@ -52,7 +37,7 @@ export class EventHandler {
       cancelAnimationFrame(this.#autoCallback);
     }
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.auto(time, fn, delay)
+      this.autoInterrupt(time, fn, delay)
     );
   }
 }

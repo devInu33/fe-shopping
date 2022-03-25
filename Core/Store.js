@@ -6,11 +6,7 @@ export class Store {
     #state = {};
     state;
     #subscriber = new Map;
-    #handler = new EventHandler();
 
-    //구독하면=> subscriber 추가
-    //구독해지하면 subscriber 제거
-    //this.state 변경하면=> subscriber 셋을 전부 setState
     constructor(state={}) {
         this.#state = this.observe(state);
         this.state = new Proxy(state, {get: (target, name) => this.#state[name]})
@@ -21,7 +17,7 @@ export class Store {
             this.#state[key] = value;
             this.subscribe(key, view);
         })
-        console.log(this.state);
+
     }
 
     subscribe(key, view) {
@@ -37,15 +33,14 @@ export class Store {
     }
 
     observe(state) {
-
         // const isProxy = Symbol("isProxy");
+        // if (name === isProxy) return true;
+        // if (!prop.isProxy && typeof prop == "object")
+        //   return new Proxy(prop, handler);
         const handler = {
             get: (target, name, receiver) => {
-                // if (name === isProxy) return true;
                 const prop = Reflect.get(target, name, receiver);
                 if (typeof prop === "undefined") return;
-                // if (!prop.isProxy && typeof prop == "object")
-                //   return new Proxy(prop, handler);
                 return prop;
             },
             set: (target, name, value) => {
@@ -60,8 +55,9 @@ export class Store {
 
     setState(newState) {
         for (const [key, value] of Object.entries(newState)) {
-            if (!this.#state[key]) return
+            if(!key in this.#state)return
             this.#state[key] = value
         }
+
     }
 }
