@@ -40,7 +40,7 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -53,3 +53,5 @@ input {
   padding: 0;
   margin: 0;
 }
+
+/*# sourceMappingURL=reset.css.map */

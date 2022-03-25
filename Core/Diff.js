@@ -1,3 +1,0 @@
-function updateElemnt(oldNode, newNode){
-
-}

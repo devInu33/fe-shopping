@@ -1,23 +1,28 @@
 @use "sass:meta";
-body{
-  min-width:1020px;
+
+body {
+  min-width: 1020px;
 }
-@mixin spriteImage($x, $y){
+
+@mixin spriteImage($x, $y) {
   background-image: url("//static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png");
   background-repeat: no-repeat;
-  background-position:$x $y;
+  background-position: $x $y;
 }
-@mixin absolute_zero($args...){
+
+@mixin absolute_zero($args...) {
   position: absolute;
-  @each $pos, $num in meta.keywords($args){
-    #{$pos}:$num;
+  @each $pos, $num in meta.keywords($args) {
+    #{$pos}: $num;
   }
 }
-@mixin width_height($args...){
-  @each $pos, $num in meta.keywords($args){
-    #{$pos}:$num;
+
+@mixin width_height($args...) {
+  @each $pos, $num in meta.keywords($args) {
+    #{$pos}: $num;
   }
 }
+
 %clearFix:after {
   content: ".";
   display: block;
@@ -25,18 +30,21 @@ body{
   height: 0;
   visibility: hidden;
 }
-%top_bar_li{
+
+%top_bar_li {
   height: 26px;
   position: relative;
   padding-top: 10px;
   float: left;
-  padding-right:12px;
+  padding-right: 12px;
 }
-%width_center{
-  width:1020px;
-  margin:0 auto;
+
+%width_center {
+  width: 1020px;
+  margin: 0 auto;
 }
-%icon_menu_span{
+
+%icon_menu_span {
   width: 50px;
   display: block;
   text-align: center;
@@ -44,7 +52,8 @@ body{
   color: #333;
   white-space: nowrap;
 }
-%new_icon i{
+
+%new_icon i {
   display: inline-block;
   overflow: hidden;
   width: 12px;
@@ -56,6 +65,7 @@ body{
   right: 0;
   top: 8px;
 }
+
 @mixin gnb_menu_link($left:14px) {
   a {
     font-weight: normal;
@@ -67,11 +77,12 @@ body{
     padding: 7px 14px 0 $left;
   }
 }
+
 @mixin gnb_menu_icon($content, $top:0, $left:0) {
   a:before {
-    content:url($content);
-    top:$top;
-    left:$left;
+    content: url($content);
+    top: $top;
+    left: $left;
     display: inline-block;
     position: absolute;
   }
