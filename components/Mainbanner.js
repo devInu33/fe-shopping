@@ -10,8 +10,7 @@ export class Mainbanner extends View {
     initState() {
         return {banner: sources.banner, words: sources.words, sidebar: sources.sidebar}
     }
-
-
+    
     template() {
         const {banner, sidebar} = this.store.state;
         return ` ${banner

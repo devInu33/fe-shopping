@@ -18,12 +18,11 @@ export default class View {
     this.store.addView(this);
     this.#el = el
     requestAnimationFrame(()=>{
-      this.setup();
       this.setEvent();
       this.render();
     })
-
   }
+  s
 
   setState(newState) {
     this.#state = {...this.#state, ...newState};

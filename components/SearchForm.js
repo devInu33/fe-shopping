@@ -1,9 +1,9 @@
 import View from "../Core/View.js";
 
 import {SearchPopup} from "./SearchPopup.js";
+import {SearchCategory} from "./SearchCategory.js";
 
 export class SearchForm extends View {
-    static #storageKey = Symbol().toString();
     #popupWords = () => this.select("#popupWords"); //필드 바인딩 문제 때문에 람다로 사용했습니다.
     #autoComplete = () => this.select("#autoComplete");
 
@@ -13,9 +13,8 @@ export class SearchForm extends View {
            <fieldset>
                     <legend>상품검색</legend>
                     <div class="searchForm">
-                        <div class="select-category">
-                            <a class="select-category__button"></a>
-                            <a class="select-category__current">전체</a>
+                         
+                          <div class="select-category">
                         </div>
                         <select id="searchCategories">
                         </select>
@@ -40,24 +39,24 @@ export class SearchForm extends View {
 
     mount() {
         new SearchPopup(this.store, this.select('#popupWords'), this)
+        new SearchCategory(this.store, this.select('.select-category'), this);
+
     }
 
 
-    setEvent() {
-        this.addEvent("focusout", "#searchKeyword", (e) => {
-            this.#popupWords().style.display = "none";
-        });
+    setEvent(){
 
-        this.addEvent("focusin", "#searchKeyword", (e) => {
+        this.addEvent("focus", "#searchKeyword", (e) => {
+            e.relatedTarget
             this.#popupWords().style.display = "block";
-        });
+        }, true);
 
         this.addEvent("keydown", "#searchKeyword", () => {
         });
 
         this.addEvent("input", "#searchKeyword", ({target: {value}}) => {
             const autoComplete = this.#autoComplete();
-            this.store.setState({currentInput:value})
+            this.store.setState({currentInput: value})
             autoComplete.className = value.length ? "auto" : null;
         });
 
@@ -67,16 +66,9 @@ export class SearchForm extends View {
             const newItems = [...recentItems];
             newItems.unshift(currentInput);
             this.store.setState({recentItems: newItems})
-            localStorage.setItem(SearchForm.#storageKey, JSON.stringify(newItems));
+            localStorage.setItem('RECENT', JSON.stringify(newItems));
         });
-        this.addEvent("click", ".delete", (e) => {
-            console.log("hello");
-            const {recentItems, currentInput} = this.store.state;
-            const newItems = [...recentItems];
-            newItems.splice(parseInt(e.target.dataset.idx), 1);
-            this.store.setState({recentItems: newItems})
-            localStorage.setItem(SearchForm.#storageKey, JSON.stringify(newItmes));
-        });
+
     }
 }
 

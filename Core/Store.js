@@ -46,6 +46,7 @@ export class Store {
             set: (target, name, value) => {
                 if (target[name] == value) return true;
                 Reflect.set(target, name, value);
+                this.#head.render();
                 if (this.#subscriber.has(name)) this.#subscriber.get(name).forEach(view => view.setState({[name]: target[name]}));
                 return true;
             },
@@ -58,6 +59,5 @@ export class Store {
             if(!key in this.#state)return
             this.#state[key] = value
         }
-
     }
 }

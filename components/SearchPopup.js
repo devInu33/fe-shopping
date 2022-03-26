@@ -1,7 +1,7 @@
 import View from "../Core/View.js";
 
 export class SearchPopup extends View {
-    #storageKey = ()=>Symbol.for('RECENT').toString()
+
 
     initState() {
         return {recentItems: JSON.parse(localStorage.getItem('RECENT')) || [], currentInput: ""}
@@ -29,14 +29,13 @@ export class SearchPopup extends View {
                             `<li data-idx=${idx}><a>${item}</a><span class="delete">삭제</span></li>`
                     )
                     .join('')}
-        </ol> `}`
+        </ol> `}</div>`
 
 
     }
 
     setEvent() {
         this.addEvent("click", ".delete", (e) => {
-            console.log("hello");
             const {recentItems, currentInput} = this.store.state;
             const newItems = [...recentItems];
             newItems.splice(parseInt(e.target.dataset.idx), 1);
