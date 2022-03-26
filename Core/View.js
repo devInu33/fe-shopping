@@ -6,47 +6,36 @@ import { ModelVisitor } from "./Visitor.js";
 export default class View {
   #el;
   #handler = new EventHandler();
-  #store = null;
-  #willRender = true;
-  parent;
-  next = null;
-  child = null;
+  store;
+  #state;
+  // parent;
+  // next = null;
+  // child = null;
 
-  constructor(store, selector, parent = undefined) {
-    if (store) {
-      this.#store = store;
-      this.#store.addView(this);
-    }
-    if (parent) parent.setChild(this);
+  constructor(store, el, parent = undefined) {
+    this.store = store;
+    this.store.addView(this);
+    this.#el = el;
     requestAnimationFrame(() => {
-      this.#el = parent
-        ? parent.select(selector)
-        : document.querySelector(selector);
       this.setEvent();
       this.render();
     });
   }
 
-  setChild(view) {
-    this.child ? this.child.setLast(view) : (this.child = view);
-    view.parent = this;
-  }
-
-  setLast(view) {
-    let curr = this;
-    while (curr.next) {
-      curr = curr.next;
-    }
-    curr.next = view;
-  }
+  s;
 
   setState(newState) {
-    this.#store.setState(newState, this);
+    this.#state = { ...this.#state, ...newState };
+    this.render();
   }
 
-  get state() {
-    return this.#store.getState(this);
+  initState() {
+    return {};
   }
+
+  setup() {}
+
+  mount() {}
 
   throttle(fn, time) {
     this.#handler.throttle(fn, time);
@@ -60,12 +49,9 @@ export default class View {
     this.#handler.startAuto(fn, delay);
   }
 
-  initState() {
-    return {};
-  }
-
   render() {
     this.#el.innerHTML = this.template();
+    this.mount();
   }
 
   template() {

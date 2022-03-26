@@ -3,48 +3,63 @@ import { App } from "../app.js";
 import { EventHandler } from "./EventHandler.js";
 
 export class Store {
-  #state = new WeakMap();
-  #currentObserver;
-  #head;
-  #visitor;
-  #handler = new EventHandler();
+  #state = {};
+  state;
+  #subscriber = new Map();
 
-  constructor(visitor) {
-    this.#visitor = visitor;
-  }
-
-  getState(view) {
-    return this.#state.get(view);
+  constructor(state = {}) {
+    this.#state = this.observe(state);
+    this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
   }
 
   addView(view) {
-    if (!this.#head) this.#head = view;
-    if (this.#state.has(view)) return;
-    const state = view.initState();
-    const isProxy = Symbol("isProxy");
-    const noRender = Symbol("noRender");
+    Object.entries(view.initState()).forEach(([key, value]) => {
+      this.#state[key] = value;
+      this.subscribe(key, view);
+    });
+  }
+
+  subscribe(key, view) {
+    if (this.#subscriber.has(key)) this.#subscriber.get(key).add(view);
+    else {
+      this.#subscriber.set(key, new Set().add(view));
+    }
+  }
+
+  unsubscribe(key, view) {
+    if (!this.#subscriber.has(key)) return;
+    this.#subscriber.get(key).delete(view);
+  }
+
+  observe(state) {
+    // const isProxy = Symbol("isProxy");
+    // if (name === isProxy) return true;
+    // if (!prop.isProxy && typeof prop == "object")
+    //   return new Proxy(prop, handler);
     const handler = {
       get: (target, name, receiver) => {
-        if (name === isProxy) return true;
         const prop = Reflect.get(target, name, receiver);
         if (typeof prop === "undefined") return;
-        if (!prop.isProxy && typeof prop == "object")
-          return new Proxy(prop, handler);
         return prop;
       },
       set: (target, name, value) => {
         if (target[name] == value) return true;
-        console.log(name);
         Reflect.set(target, name, value);
-        if (name != noRender) {
-          this.#handler.debounce(() => view.render());
-        }
+
+        if (this.#subscriber.has(name))
+          this.#subscriber
+            .get(name)
+            .forEach((view) => view.setState({ [name]: target[name] }));
         return true;
       },
     };
-    this.#state.set(view, new Proxy(state, handler));
+    return new Proxy(state, handler);
   }
-  setState(newState, view, render) {
-    this.#state.get(view).this.#handler.debounce(() => this.#head.render());
+
+  setState(newState) {
+    for (const [key, value] of Object.entries(newState)) {
+      if (!key in this.#state) return;
+      this.#state[key] = value;
+    }
   }
 }
