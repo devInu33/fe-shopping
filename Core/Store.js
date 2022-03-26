@@ -1,63 +1,65 @@
-import {ModelVisitor} from "./Visitor.js";
-import {App} from "../app.js";
-import {EventHandler} from "./EventHandler.js";
+import { ModelVisitor } from "./Visitor.js";
+import { App } from "../app.js";
+import { EventHandler } from "./EventHandler.js";
 
 export class Store {
-    #state = {};
-    state;
-    #subscriber = new Map;
+  #state = {};
+  state;
+  #subscriber = new Map();
 
-    constructor(state={}) {
-        this.#state = this.observe(state);
-        this.state = new Proxy(state, {get: (target, name) => this.#state[name]})
+  constructor(state = {}) {
+    this.#state = this.observe(state);
+    this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
+  }
+
+  addView(view) {
+    Object.entries(view.initState()).forEach(([key, value]) => {
+      this.#state[key] = value;
+      this.subscribe(key, view);
+    });
+  }
+
+  subscribe(key, view) {
+    if (this.#subscriber.has(key)) this.#subscriber.get(key).add(view);
+    else {
+      this.#subscriber.set(key, new Set().add(view));
     }
+  }
 
-    addView(view) {
-        Object.entries(view.initState()).forEach(([key, value]) => {
-            this.#state[key] = value;
-            this.subscribe(key, view);
-        })
+  unsubscribe(key, view) {
+    if (!this.#subscriber.has(key)) return;
+    this.#subscriber.get(key).delete(view);
+  }
 
+  observe(state) {
+    // const isProxy = Symbol("isProxy");
+    // if (name === isProxy) return true;
+    // if (!prop.isProxy && typeof prop == "object")
+    //   return new Proxy(prop, handler);
+    const handler = {
+      get: (target, name, receiver) => {
+        const prop = Reflect.get(target, name, receiver);
+        if (typeof prop === "undefined") return;
+        return prop;
+      },
+      set: (target, name, value) => {
+        if (target[name] == value) return true;
+        Reflect.set(target, name, value);
+
+        if (this.#subscriber.has(name))
+          this.#subscriber
+            .get(name)
+            .forEach((view) => view.setState({ [name]: target[name] }));
+        return true;
+      },
+    };
+    return new Proxy(state, handler);
+  }
+
+  setState(newState) {
+    for (const [key, value] of Object.entries(newState)) {
+      if (!key in this.#state) return;
+      this.#state[key] = value;
     }
-
-    subscribe(key, view) {
-        if (this.#subscriber.has(key)) this.#subscriber.get(key).add(view)
-        else {
-            this.#subscriber.set(key, new Set().add(view))
-        }
-    }
-
-    unsubscribe(key, view) {
-        if (!this.#subscriber.has(key)) return;
-        this.#subscriber.get(key).delete(view);
-    }
-
-    observe(state) {
-        // const isProxy = Symbol("isProxy");
-        // if (name === isProxy) return true;
-        // if (!prop.isProxy && typeof prop == "object")
-        //   return new Proxy(prop, handler);
-        const handler = {
-            get: (target, name, receiver) => {
-                const prop = Reflect.get(target, name, receiver);
-                if (typeof prop === "undefined") return;
-                return prop;
-            },
-            set: (target, name, value) => {
-                if (target[name] == value) return true;
-                Reflect.set(target, name, value);
-                this.#head.render();
-                if (this.#subscriber.has(name)) this.#subscriber.get(name).forEach(view => view.setState({[name]: target[name]}));
-                return true;
-            },
-        };
-        return new Proxy(state, handler);
-    }
-
-    setState(newState) {
-        for (const [key, value] of Object.entries(newState)) {
-            if(!key in this.#state)return
-            this.#state[key] = value
-        }
-    }
+  }
 }

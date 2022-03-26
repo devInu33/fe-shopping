@@ -1,8 +1,5 @@
 import { delay } from "../util.js";
 
-
-
-
 export class EventHandler {
   #throttle;
   #autoCallback = -1;
@@ -15,6 +12,7 @@ export class EventHandler {
       currentCallback = requestAnimationFrame(fn);
     })();
   }
+
   throttle(fn, time) {
     if (this.#throttle === true) return false;
     this.#throttle = true;

@@ -13,26 +13,30 @@ export default class View {
   // child = null;
 
   constructor(store, el, parent = undefined) {
-
     this.store = store;
     this.store.addView(this);
-    this.#el = el
-    requestAnimationFrame(()=>{
+    this.#el = el;
+    requestAnimationFrame(() => {
       this.setEvent();
       this.render();
-    })
+    });
   }
-  s
+
+  s;
 
   setState(newState) {
-    this.#state = {...this.#state, ...newState};
+    this.#state = { ...this.#state, ...newState };
     this.render();
   }
-  initState(){
-    return{}
+
+  initState() {
+    return {};
   }
-  setup(){}
-  mount(){}
+
+  setup() {}
+
+  mount() {}
+
   throttle(fn, time) {
     this.#handler.throttle(fn, time);
   }
@@ -47,7 +51,7 @@ export default class View {
 
   render() {
     this.#el.innerHTML = this.template();
-    this.mount()
+    this.mount();
   }
 
   template() {
