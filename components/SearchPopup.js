@@ -6,15 +6,16 @@ export class SearchPopup extends View {
       recentItems: JSON.parse(localStorage.getItem("RECENT")) || [],
       currentInput: "",
       selected: -1,
+      isArrowKey: false,
     };
   }
 
-  *unsubscribe(key) {
-    yield this.store.unsubscribe(key);
-  }
-
   template() {
-    const { currentInput, recentItems, words, selected } = this.store.state;
+    const { currentInput, recentItems, words, selected, isArrowKey } =
+      this.store.state;
+    isArrowKey
+      ? this.store.unsubscribe("currentInput", this)
+      : this.store.subscribe("currentInput", this);
     return `
                 <div id="autoComplete">
                 ${
@@ -44,6 +45,10 @@ export class SearchPopup extends View {
   }
 
   setEvent() {
+    const { isArrowKey } = this.store.state;
+    isArrowKey
+      ? this.store.unsubscribe("currentInput", this)
+      : this.store.subscribe("currentInput", this);
     this.addEvent("click", ".delete", (e) => {
       const { recentItems, currentInput } = this.store.state;
       const newItems = [...recentItems];

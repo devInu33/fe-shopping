@@ -57,25 +57,23 @@ export class SearchForm extends View {
     this.addEvent("keydown", "#searchKeyword", (e) => {
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return false;
       const { selected } = this.store.state;
-
       const items = [...this.selectAll("a[data-idx]")];
+      this.store.setState({ isArrowKey: true });
       console.log(items);
-      this.unsubscribe("currentInput");
       return e.key === "ArrowUp"
         ? selected === -1
           ? false
-          : ((e.target.value = items[selected - 1].textContent),
-            this.store.setState({ selected: selected - 1 }),
-            this.subscribe("currentInput"))
+          : (this.store.setState({ selected: selected - 1 }),
+            (e.target.value = this.select("a.selected").textContent),
+            this.store.setState({ isArrowKey: false }))
         : selected === items.length - 1
         ? false
-        : ((e.target.value = items[selected + 1].textContent),
-          this.store.setState({ selected: selected + 1 }),
-          this.subscribe("currentInput"));
+        : (this.store.setState({ selected: selected + 1 }),
+          (e.target.value = this.select("a.selected").textContent),
+          this.store.setState({ isArrowKey: false }));
     });
 
     this.addEvent("input", "#searchKeyword", ({ target: { value } }) => {
-      console.log(value);
       const autoComplete = this.#autoComplete();
       this.store.setState({ currentInput: value });
       autoComplete.className = value.length ? "auto" : null;
@@ -84,6 +82,7 @@ export class SearchForm extends View {
     this.addEvent("submit", "#searchForm", (e) => {
       e.preventDefault();
       const { recentItems, currentInput } = this.store.state;
+      if (!currentInput) return false;
       const newItems = [...recentItems];
       newItems.unshift(currentInput);
       this.store.setState({ recentItems: newItems });

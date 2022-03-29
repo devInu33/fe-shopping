@@ -9,33 +9,31 @@ export default class View {
   store;
   #state;
   parent;
-  // next = null;
+  next = null;
   #head = null;
   subscribeKeys;
+  prop;
 
-  constructor(store, el, parent = undefined) {
+  constructor(store, el, parent = undefined, prop = undefined) {
     this.store = store;
     this.store.addView(this);
+    this.prop = prop;
     if (parent) parent.setChild(this);
     this.#el = el;
+
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
     });
-    this.subscribeKeys = Object.entries(this.initState()).map(
-      ([key, value]) => ({
-        [key]: true,
-      })
-    );
   }
 
   setState(newState) {
-    if (
-      Object.entries(newState).every(([key, value]) => {
-        return this.#state[key] && this.#state[key] === value;
-      })
-    )
-      return;
+    // if (
+    //   Object.entries(newState).every(([key, value]) => {
+    //     return key in this.#state && this.#state[key] === value;
+    //   })
+    // )
+    //   return;
     this.#state = { ...this.#state, ...newState };
     this.render();
   }
@@ -57,13 +55,15 @@ export default class View {
   }
 
   unsubscribe(key) {
-    this.subscribeKeys[key] = false;
+    this.store.unsubscribe(key, this);
+    if (this.next) this.next.unsubscribe(key);
+    if (this.#head) this.#head.unsubscribe(key);
   }
 
-  *subscribe(key) {
-    if (!key in this.subscribeKeys) return;
-    this.subscribeKeys[key] = true;
-    yield { view: this, key, bool: true };
+  subscribe(key) {
+    this.store.subscribe(key, this);
+    if (this.next) this.next.subscribe(key);
+    if (this.#head) this.#head.subscribe(key);
   }
 
   initState() {
