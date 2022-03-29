@@ -2,12 +2,13 @@ import { ModelVisitor } from "./Visitor.js";
 import { App } from "../app.js";
 import { EventHandler } from "./EventHandler.js";
 
-export class Store {
+export class Store extends Map {
   #state = {};
   state;
   #subscriber = new Map();
 
   constructor(state = {}) {
+    super();
     this.#state = this.observe(state);
     this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
   }
@@ -20,14 +21,14 @@ export class Store {
   }
 
   subscribe(key, view) {
-    this.#subscriber.has(key)
-      ? this.#subscriber.get(key).add(view)
-      : this.#subscriber.set(key, new Set().add(view));
+    super.has(key)
+      ? super.get(key).add(view)
+      : super.set(key, new Set().add(view));
   }
 
   unsubscribe(key, view) {
     if (!this.#subscriber.has(key)) return;
-    this.#subscriber.get(key).delete(view);
+    super.get(key).delete(view);
   }
 
   observe(state) {
@@ -44,8 +45,8 @@ export class Store {
       set: (target, name, value) => {
         if (target[name] == value) return true;
         Reflect.set(target, name, value);
-        if (this.#subscriber.has(name))
-          this.#subscriber.get(name).forEach((view) => {
+        if (super.has(name))
+          super.get(name).forEach((view) => {
             view.setState({ [name]: target[name] });
           });
         return true;

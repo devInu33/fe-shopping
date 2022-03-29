@@ -197,3 +197,40 @@
     @include shared.gnb_menu_icon("https://static.coupangcdn.com/image/coupang/home/icons/Overseas.png", 3px, 14px);
   }
 }
+
+.categoryBtn {
+  .category-layer {
+    @include shared.absolute_zero($top: 114px, $left: 0);
+    position: absolute;
+    width: auto;
+    height: auto;
+    min-height: 450px;
+    border: 1px solid #ddd;
+    box-shadow: -1px 4px 5px rgb(0 0 0 / 30%);
+    z-index: 1;
+    background: #fff;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+
+    h3 {
+      display: block;
+      text-indent: -9em;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      font-size: 0;
+    }
+
+    .shopping-list {
+      padding: 8px 0 5px 0;
+      border-bottom: #ddd solid 1px;
+      margin: 0;
+
+      li {
+        height: 29px;
+      }
+    }
+
+  }
+}

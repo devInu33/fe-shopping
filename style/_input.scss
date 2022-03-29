@@ -17,7 +17,7 @@
       font-size: 12px;
       font-weight: normal;
       height: 37px;
-
+      display: block;
 
       .select-category__button {
         @include shared.spriteImage(6px, -165px);
@@ -120,8 +120,7 @@
 
     }
 
-    .auto {
-      cursor: pointer;
+    > a {
       height: 13px;
       overflow: hidden;
       white-space: nowrap;
@@ -138,8 +137,11 @@
         font-weight: bold;
       }
 
-      &.selected {
+
+      &:hover {
         text-decoration: underline;
+        color: #0070ff;
+        background-color: blue;
       }
     }
   }
@@ -165,7 +167,7 @@
       overflow: hidden;
       white-space: nowrap;
 
-      &:hover, &.selected {
+      &:hover {
         text-decoration: underline;
         color: #0070ff;
       }
@@ -185,11 +187,54 @@
       text-indent: -9999px;
       cursor: pointer;
 
-      &:hover {
+      &:hover, {
         text-indent: 0;
         background-position: -95px -182px;
       }
     }
   }
 }
+
+
+.select-category {
+
+  .select-category__option {
+    top: 38px;
+    max-height: 754px;
+    display: none;
+    width: 125px;
+    padding: 10px 0 10px 10px;
+    border: 1px solid #ddd;
+    left: -2px;
+    box-shadow: 0 4px 5px rgb(0 0 0 / 30%);
+    background-color: #fff;
+    z-index: 1;
+    overflow-y: auto;
+    margin-top: -1px;
+    position: absolute;
+
+    li {
+      font-size: 12px;
+
+      a {
+        display: block;
+        outline: 0;
+        padding: 7px 0 7px 3px;
+        letter-spacing: -1px;
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+          color: blue;
+        }
+      }
+    }
+  }
+}
+
+
+
+
 

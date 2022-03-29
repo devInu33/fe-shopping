@@ -4,6 +4,7 @@ import View from "./Core/View.js";
 import { Store } from "./Core/Store.js";
 import { ModelVisitor } from "./Core/Visitor.js";
 import { SearchForm } from "./components/SearchForm.js";
+import { Megadrop } from "./components/Megadrop.js";
 
 export class App extends View {
   template() {
@@ -55,6 +56,7 @@ export class App extends View {
                 </section>
                 <div class="categoryBtn">
                     <a>카테고리</a>
+                    <div class="category-layer"></div>
                 </div>
             </header>
         </div>
@@ -69,16 +71,37 @@ export class App extends View {
   mount() {
     new Mainbanner(store, this.select(".banner"), this);
     new SearchForm(store, this.select(".product-search"), this);
+    new Megadrop(store, this.select(".category-layer"), this);
   }
 
   setEvent() {
-    this.addEvent("click", "body", (e) => {
-      if (!e.target.closest("form"))
+    this.addEvent("click", "body", ({ target }) => {
+      if (!target.closest("form") || !target.closest(".select-category")) {
         this.select("#popupWords").style.display = "none";
-      else {
-        this.select("#popupWords").style.display = "block";
-      }
+        this.select(".shopping-list").style.display = "none";
+      } else return false;
     });
+    this.addEvent(
+      "mouseenter",
+      ".categoryBtn",
+      (e) => {
+        this.store.setState({ layerSelected: true });
+      },
+      true
+    );
+    this.addEvent(
+      "mouseleave",
+      ".categoryBtn",
+      (e) => {
+        console.log("bye");
+        this.store.setState({
+          firstlayer: -1,
+          secondlayer: -1,
+          layerSelected: false,
+        });
+      },
+      true
+    );
   }
 }
 

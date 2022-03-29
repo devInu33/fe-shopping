@@ -14,12 +14,8 @@ export class SearchForm extends View {
                     <legend>상품검색</legend>
                     <div class="searchForm">
                          
-                          <div class="select-category">
-
+                        <div class="select-category">
                         </div>
-                        <select id="searchCategories">
-                        </select>
-                        
                         <label for="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!"
                                                             autoComplete="off"/></label>
                         <a class="speech-mic"></a>
@@ -53,23 +49,25 @@ export class SearchForm extends View {
       },
       true
     );
-
-    this.addEvent("keydown", "#searchKeyword", (e) => {
+    this.addEvent("click", ".select-category", (e) => {
+      const { isOpened } = this.store.state;
+      this.store.setState({ isOpened: !isOpened });
+    });
+    this.addEvent("keyup", "#searchKeyword", (e) => {
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return false;
       const { selected } = this.store.state;
       const items = [...this.selectAll("a[data-idx]")];
       this.store.setState({ isArrowKey: true });
-      console.log(items);
       return e.key === "ArrowUp"
         ? selected === -1
           ? false
           : (this.store.setState({ selected: selected - 1 }),
-            (e.target.value = this.select("a.selected").textContent),
+            (e.target.value = items[selected - 1].textContent),
             this.store.setState({ isArrowKey: false }))
         : selected === items.length - 1
         ? false
         : (this.store.setState({ selected: selected + 1 }),
-          (e.target.value = this.select("a.selected").textContent),
+          (e.target.value = items[selected + 1].textContent),
           this.store.setState({ isArrowKey: false }));
     });
 

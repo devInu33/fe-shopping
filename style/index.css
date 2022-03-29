@@ -313,6 +313,39 @@ body {
   position: absolute;
 }
 
+.categoryBtn .category-layer {
+  position: absolute;
+  top: 114px;
+  left: 0;
+  position: absolute;
+  width: auto;
+  height: auto;
+  min-height: 450px;
+  border: 1px solid #ddd;
+  box-shadow: -1px 4px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  background: #fff;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+.categoryBtn .category-layer h3 {
+  display: block;
+  text-indent: -9em;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
+.categoryBtn .category-layer .shopping-list {
+  padding: 8px 0 5px 0;
+  border-bottom: #ddd solid 1px;
+  margin: 0;
+}
+.categoryBtn .category-layer .shopping-list li {
+  height: 29px;
+}
+
 body {
   min-width: 1020px;
 }
@@ -480,6 +513,7 @@ body {
   font-size: 12px;
   font-weight: normal;
   height: 37px;
+  display: block;
 }
 #searchForm .searchForm .select-category .select-category__button {
   background-image: url("//static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png");
@@ -589,8 +623,7 @@ body {
   border-bottom: 1px solid #ddd;
   font-size: 12px;
 }
-#popupWords #autoComplete .auto {
-  cursor: pointer;
+#popupWords #autoComplete > a {
   height: 13px;
   overflow: hidden;
   white-space: nowrap;
@@ -602,9 +635,14 @@ body {
   display: block;
   padding: 0 0 16px 0;
 }
-#popupWords #autoComplete .auto > strong {
+#popupWords #autoComplete > a > strong {
   color: #008cff;
   font-weight: bold;
+}
+#popupWords #autoComplete > a:hover {
+  text-decoration: underline;
+  color: #0070ff;
+  background-color: blue;
 }
 
 #autoComplete > ol {
@@ -649,6 +687,38 @@ body {
 #autoComplete > ol li .delete:hover {
   text-indent: 0;
   background-position: -95px -182px;
+}
+
+.select-category .select-category__option {
+  top: 38px;
+  max-height: 754px;
+  display: none;
+  width: 125px;
+  padding: 10px 0 10px 10px;
+  border: 1px solid #ddd;
+  left: -2px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  z-index: 1;
+  overflow-y: auto;
+  margin-top: -1px;
+  position: absolute;
+}
+.select-category .select-category__option li {
+  font-size: 12px;
+}
+.select-category .select-category__option li a {
+  display: block;
+  outline: 0;
+  padding: 7px 0 7px 3px;
+  letter-spacing: -1px;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.select-category .select-category__option li a:hover {
+  text-decoration: underline;
+  color: blue;
 }
 
 /*# sourceMappingURL=index.css.map */
