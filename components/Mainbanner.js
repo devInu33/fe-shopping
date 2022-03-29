@@ -23,7 +23,7 @@ export class Mainbanner extends View {
             idx === this.#idx ? "selected" : ""
           }" src="${img}" >`
       )
-      .join("")}     
+      .join("")}    
         <div class="selected-product">
             <div class="image-container">
                 <a></a>
@@ -60,17 +60,11 @@ export class Mainbanner extends View {
       this.#idx === 5 ? this.changeBanner(0) : this.changeBanner(this.#idx + 1);
 
     this.startAuto(auto, 3000);
-    this.addEvent(
-      "mouseover",
-      "span",
-      (e) => {
-        this.throttle(
-          () => this.changeBanner(parseInt(e.target.dataset.idx)),
-          100
-        );
-        this.startAuto(auto, 3000);
-      },
-      100
-    );
+    this.addEvent("mouseover", "span", (e) => {
+      this.throttle(
+        () => this.changeBanner(parseInt(e.target.dataset.idx)),
+        100
+      );
+    });
   }
 }

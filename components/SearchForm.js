@@ -15,6 +15,7 @@ export class SearchForm extends View {
                     <div class="searchForm">
                          
                           <div class="select-category">
+
                         </div>
                         <select id="searchCategories">
                         </select>
@@ -27,6 +28,7 @@ export class SearchForm extends View {
                 </fieldset>
                 <div id="popupWords" style="display:none">
                 </div>
+
               </form>    
             </div>
       </div>

@@ -40,16 +40,17 @@ export class Store {
       get: (target, name, receiver) => {
         const prop = Reflect.get(target, name, receiver);
         if (typeof prop === "undefined") return;
+
         return prop;
       },
       set: (target, name, value) => {
         if (target[name] == value) return true;
         Reflect.set(target, name, value);
+        if (this.#subscriber.has[name])
+          this.#subscriber.get[name].forEach((view) =>
+            view.setState({ [name]: target[name] })
+          );
 
-        if (this.#subscriber.has(name))
-          this.#subscriber
-            .get(name)
-            .forEach((view) => view.setState({ [name]: target[name] }));
         return true;
       },
     };
@@ -58,7 +59,7 @@ export class Store {
 
   setState(newState) {
     for (const [key, value] of Object.entries(newState)) {
-      if (!key in this.#state) return;
+      if (!key in this.#state) continue;
       this.#state[key] = value;
     }
   }
