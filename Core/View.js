@@ -8,25 +8,62 @@ export default class View {
   #handler = new EventHandler();
   store;
   #state;
-  // parent;
+  parent;
   // next = null;
-  // child = null;
+  #head = null;
+  subscribeKeys;
 
   constructor(store, el, parent = undefined) {
     this.store = store;
     this.store.addView(this);
+    if (parent) parent.setChild(this);
     this.#el = el;
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
     });
+    this.subscribeKeys = Object.entries(this.initState()).map(
+      ([key, value]) => ({
+        [key]: true,
+      })
+    );
   }
 
-  s;
-
   setState(newState) {
+    if (
+      Object.entries(newState).every(([key, value]) => {
+        return this.#state[key] && this.#state[key] === value;
+      })
+    )
+      return;
     this.#state = { ...this.#state, ...newState };
     this.render();
+  }
+
+  setChild(view) {
+    view.parent = this;
+    if (!this.#head) this.#head = view;
+    else this.#head.next = view;
+  }
+
+  set next(v) {
+    let curr = this;
+    if (!curr.next) {
+      curr.next = v;
+    } else {
+      while (curr.next) curr = curr.next;
+      curr.next = v;
+    }
+  }
+
+  unsubscribe(key) {
+    this.subscribeKeys[key] = false;
+  }
+
+  *subscribe(key) {
+    if (!key in this.subscribeKeys) return;
+    this.subscribeKeys[key] = true;
+    yield { view: this, key, bool: true };
   }
 
   initState() {

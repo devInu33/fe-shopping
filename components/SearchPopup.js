@@ -5,20 +5,27 @@ export class SearchPopup extends View {
     return {
       recentItems: JSON.parse(localStorage.getItem("RECENT")) || [],
       currentInput: "",
+      selected: -1,
     };
   }
 
+  *unsubscribe(key) {
+    yield this.store.unsubscribe(key);
+  }
+
   template() {
-    const { currentInput, recentItems, words } = this.store.state;
+    const { currentInput, recentItems, words, selected } = this.store.state;
     return `
                 <div id="autoComplete">
                 ${
                   currentInput.length
                     ? words
                         .filter((word) => word.includes(currentInput))
-                        .reduce((acc, cur) => {
+                        .reduce((acc, cur, idx) => {
                           const [front, back] = cur.split(currentInput.trim());
-                          acc += `<a class="auto">${front}<strong>${currentInput}</strong>${back}</a>`;
+                          acc += `<a data-idx=${idx} class="auto ${
+                            idx === selected ? "selected" : ""
+                          }">${front}<strong>${currentInput}</strong>${back}</a>`;
                           return acc;
                         }, "")
                     : `<h3>
@@ -27,7 +34,9 @@ export class SearchPopup extends View {
         <ol>${recentItems
           .map(
             (item, idx) =>
-              `<li data-idx=${idx}><a>${item}</a><span class="delete">삭제</span></li>`
+              `<li ><a data-idx=${idx} class=${
+                idx === selected ? "selected" : ""
+              }>${item}</a><span class="delete">삭제</span></li>`
           )
           .join("")}
         </ol> `

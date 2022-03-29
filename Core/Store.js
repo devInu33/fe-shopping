@@ -19,11 +19,15 @@ export class Store {
     });
   }
 
-  subscribe(key, view) {
-    if (this.#subscriber.has(key)) this.#subscriber.get(key).add(view);
-    else {
-      this.#subscriber.set(key, new Set().add(view));
-    }
+  subscribe(key, view, bool) {
+    if (bool)
+      this.#subscriber.has(key)
+        ? bool
+          ? this.#subscriber.get(key).add(view)
+          : this.#subscriber.get(key).delete(view)
+        : bool
+        ? this.#subscriber.set(key, new Set().add(view))
+        : null;
   }
 
   unsubscribe(key, view) {
