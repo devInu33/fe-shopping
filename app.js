@@ -4,6 +4,7 @@ import View from "./Core/View.js";
 import { Store } from "./Core/Store.js";
 import { ModelVisitor } from "./Core/Visitor.js";
 import { SearchForm } from "./components/SearchForm.js";
+
 import { Megadrop } from "./components/Megadrop.js";
 
 export class App extends View {
