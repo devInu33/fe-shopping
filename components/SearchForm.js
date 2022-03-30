@@ -45,7 +45,6 @@ export class SearchForm extends View {
       "focus",
       "#searchKeyword",
       (e) => {
-        console.log("hi");
         this.#popupWords().style.display = "block";
       },
       true
@@ -62,14 +61,12 @@ export class SearchForm extends View {
       return e.key === "ArrowUp"
         ? selected === -1
           ? false
-          : (this.store.setState({ selected: selected - 1 }),
-            (e.target.value = items[selected - 1].textContent),
-            this.store.setState({ isArrowKey: false }))
+          : ((e.target.value = items[selected - 1].textContent),
+            this.store.setState({ selected: selected - 1, isArrowKey: false }))
         : selected === items.length - 1
         ? false
-        : (this.store.setState({ selected: selected + 1 }),
-          (e.target.value = items[selected + 1].textContent),
-          this.store.setState({ isArrowKey: false }));
+        : ((e.target.value = items[selected + 1].textContent),
+          this.store.setState({ selected: selected + 1, isArrowKey: false }));
     });
 
     this.addEvent("input", "#searchKeyword", ({ target: { value } }) => {
