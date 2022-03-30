@@ -5,7 +5,7 @@ export class Megadrop extends View {
   initState() {
     return {
       layers: sources["smartlayer"],
-      layerSelected: true,
+      layerSelected: false,
       firstIdx: -1,
       secondIdx: -1,
     };

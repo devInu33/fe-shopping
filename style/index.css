@@ -327,7 +327,6 @@ body {
   text-align: left;
   margin: 0;
   padding: 0;
-  display: none;
 }
 .categoryBtn .category-layer h3 {
   display: block;
@@ -344,8 +343,9 @@ body {
 }
 .categoryBtn .category-layer .shopping-list li {
   height: 29px;
+  width: 100%;
 }
-.categoryBtn .category-layer .shopping-list li a {
+.categoryBtn .category-layer .shopping-list li .layer.first {
   position: relative;
   width: 114px;
   height: 20px;
@@ -401,6 +401,7 @@ body {
   white-space: nowrap;
   display: inline-block;
   color: #333;
+  cursor: pointer;
 }
 
 .depth.third {

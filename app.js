@@ -78,14 +78,14 @@ export class App extends View {
     this.addEvent("click", "body", ({ target }) => {
       if (!target.closest("form") || !target.closest(".select-category")) {
         this.select("#popupWords").style.display = "none";
-        this.select(".category-layer").style.display = "none";
+        this.store.setState({ layerSelected: false });
       } else return false;
     });
     this.addEvent(
       "mouseenter",
       ".categoryBtn",
       (e) => {
-        this.select(".category-layer").style.display = "block";
+        this.store.setState({ layerSelected: true });
       },
       true
     );
@@ -94,7 +94,7 @@ export class App extends View {
       ".categoryBtn",
       (e) => {
         if (e.relatedTarget.closest(".categoryBtn")) return false;
-        this.select(".category-layer").style.display = "none";
+        this.store.setState({ layerSelected: false });
       },
       true
     );

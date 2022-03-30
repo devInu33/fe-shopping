@@ -210,7 +210,7 @@
     text-align: left;
     margin: 0;
     padding: 0;
-    display: none;
+
 
     h3 {
       display: block;
@@ -227,8 +227,9 @@
 
       li {
         height: 29px;
+        width: 100%;
 
-        a {
+        .layer.first {
           position: relative;
           @include shared.width_height($width: 114px, $height: 20px);
           padding: 9px 0 0 51px;
@@ -284,6 +285,7 @@
       white-space: nowrap;
       display: inline-block;
       color: #333;
+      cursor: pointer;
     }
   }
 }

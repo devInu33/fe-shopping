@@ -48,18 +48,6 @@ export default class View {
     }
   }
 
-  unsubscribe(key) {
-    this.store.unsubscribe(key, this);
-    if (this.next) this.next.unsubscribe(key);
-    if (this.#head) this.#head.unsubscribe(key);
-  }
-
-  subscribe(key) {
-    this.store.subscribe(key, this);
-    if (this.next) this.next.subscribe(key);
-    if (this.#head) this.#head.subscribe(key);
-  }
-
   initState() {
     return {};
   }
