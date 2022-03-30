@@ -149,7 +149,7 @@ body {
   margin-right: 30px;
   text-align: center;
 }
-#header .categoryBtn a {
+#header .categoryBtn > a {
   display: block;
   margin-top: 73px;
   color: #fff;
