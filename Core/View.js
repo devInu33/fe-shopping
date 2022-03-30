@@ -20,7 +20,7 @@ export default class View {
     this.prop = prop;
     if (parent) parent.setChild(this);
     this.#el = el;
-
+    this.#state = { ...this.initState() };
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
@@ -28,12 +28,6 @@ export default class View {
   }
 
   setState(newState) {
-    // if (
-    //   Object.entries(newState).every(([key, value]) => {
-    //     return key in this.#state && this.#state[key] === value;
-    //   })
-    // )
-    //   return;
     this.#state = { ...this.#state, ...newState };
     this.render();
   }

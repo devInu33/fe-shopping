@@ -78,14 +78,14 @@ export class App extends View {
     this.addEvent("click", "body", ({ target }) => {
       if (!target.closest("form") || !target.closest(".select-category")) {
         this.select("#popupWords").style.display = "none";
-        this.select(".shopping-list").style.display = "none";
+        this.select(".category-layer").style.display = "none";
       } else return false;
     });
     this.addEvent(
       "mouseenter",
       ".categoryBtn",
       (e) => {
-        this.store.setState({ layerSelected: true });
+        this.select(".category-layer").style.display = "block";
       },
       true
     );
@@ -93,12 +93,8 @@ export class App extends View {
       "mouseleave",
       ".categoryBtn",
       (e) => {
-        console.log("bye");
-        this.store.setState({
-          firstlayer: -1,
-          secondlayer: -1,
-          layerSelected: false,
-        });
+        if (e.relatedTarget.closest(".categoryBtn")) return false;
+        this.select(".category-layer").style.display = "none";
       },
       true
     );

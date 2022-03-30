@@ -5,7 +5,6 @@ import { EventHandler } from "./EventHandler.js";
 export class Store extends Map {
   #state = {};
   state;
-  #subscriber = new Map();
 
   constructor(state = {}) {
     super();
@@ -27,7 +26,7 @@ export class Store extends Map {
   }
 
   unsubscribe(key, view) {
-    if (!this.#subscriber.has(key)) return;
+    if (!super.has(key)) return;
     super.get(key).delete(view);
   }
 

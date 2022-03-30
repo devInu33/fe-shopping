@@ -317,7 +317,6 @@ body {
   position: absolute;
   top: 114px;
   left: 0;
-  position: absolute;
   width: auto;
   height: auto;
   min-height: 450px;
@@ -328,12 +327,13 @@ body {
   text-align: left;
   margin: 0;
   padding: 0;
+  display: none;
 }
 .categoryBtn .category-layer h3 {
   display: block;
-  text-indent: -9em;
   width: 0;
   height: 0;
+  text-indent: -9em;
   overflow: hidden;
   font-size: 0;
 }
@@ -344,6 +344,76 @@ body {
 }
 .categoryBtn .category-layer .shopping-list li {
   height: 29px;
+}
+.categoryBtn .category-layer .shopping-list li a {
+  position: relative;
+  width: 114px;
+  height: 20px;
+  padding: 9px 0 0 51px;
+  white-space: nowrap;
+  display: inline-block;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+}
+.categoryBtn .category-layer .shopping-list li .depth.second {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 163px;
+  min-height: 450px;
+  background-image: none;
+  background-color: #fff;
+  margin: -1px 0 0 0;
+  padding-right: 0;
+  border: 1px solid #ddd;
+  box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 2;
+}
+.categoryBtn .category-layer .shopping-list li .depth.second.selected {
+  display: block;
+  width: 591px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.depth ul {
+  height: 100%;
+  border: 0;
+  padding-top: 12px;
+  position: absolute;
+  z-index: 2;
+  background: #fff;
+}
+.depth ul li {
+  width: 157px;
+  height: 28px;
+  overflow: hidden;
+}
+.depth ul li a {
+  font-size: 12px;
+  width: 137px;
+  height: 28px;
+  position: relative;
+  letter-spacing: -1px;
+  padding: 9px 0 0 20px;
+  white-space: nowrap;
+  display: inline-block;
+  color: #333;
+}
+
+.depth.third {
+  position: absolute;
+  left: 157px;
+  top: 0;
+  height: 100%;
+  width: 177px;
+  border-left: #ddd solid 1px;
+  display: none;
+}
+.depth.third.selected {
+  display: block;
 }
 
 body {

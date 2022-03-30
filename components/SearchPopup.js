@@ -13,7 +13,6 @@ export class SearchPopup extends View {
   template() {
     const { currentInput, recentItems, words, selected, isArrowKey } =
       this.store.state;
-    console.log(selected);
     isArrowKey
       ? this.store.unsubscribe("currentInput", this)
       : this.store.subscribe("currentInput", this);
