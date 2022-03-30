@@ -1,7 +1,7 @@
 export const delay = (time) => new Promise((res) => setTimeout(res, time));
 
 export const myFetch = async (key) => {
-  const url = `http://127.0.0.1:3000/${key}`;
+  const url = `./express-server/static/${key}.json`;
   try {
     return await (await fetch(url)).json();
   } catch (e) {
