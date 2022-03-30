@@ -8,10 +8,8 @@ export default class View {
   #handler = new EventHandler();
   store;
   #state;
-  parent;
   next = null;
   #head = null;
-  subscribeKeys;
   prop;
 
   constructor(store, el, parent = undefined, prop = undefined) {

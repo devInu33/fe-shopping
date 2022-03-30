@@ -45,6 +45,7 @@ export class SearchForm extends View {
       "focus",
       "#searchKeyword",
       (e) => {
+        console.log("hi");
         this.#popupWords().style.display = "block";
       },
       true

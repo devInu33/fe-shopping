@@ -8,7 +8,7 @@ export class Store extends Map {
 
   constructor(state = {}) {
     super();
-    this.#state = this.observe(state);
+    this.#state = this.observe(this.#state);
     this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
   }
 

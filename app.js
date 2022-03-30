@@ -76,10 +76,12 @@ export class App extends View {
 
   setEvent() {
     this.addEvent("click", "body", ({ target }) => {
-      if (!target.closest("form") || !target.closest(".select-category")) {
-        this.select("#popupWords").style.display = "none";
-        this.store.setState({ layerSelected: false });
-      } else return false;
+      if (
+        target.closest(".product-search") ||
+        target.closest(".select-category")
+      ) {
+        return false;
+      } else this.select("#popupWords").style.display = "none";
     });
     this.addEvent(
       "mouseenter",
