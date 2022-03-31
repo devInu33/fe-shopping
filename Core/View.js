@@ -22,6 +22,7 @@ export default class View {
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
+      this.mount();
     });
   }
 
@@ -66,9 +67,10 @@ export default class View {
     this.#handler.startAuto(fn, delay);
   }
 
-  render() {
-    this.#el.innerHTML = this.template();
-    this.mount();
+  *render() {
+    yield (this.#el.innerHTML = this.template());
+    if (this.next) yield* this.next.render();
+    if (this.#head) yield* this.#head.render();
   }
 
   template() {

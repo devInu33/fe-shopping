@@ -12,7 +12,6 @@ export class SearchCategory extends View {
 
   template() {
     const { selectedCategory, categories, isOpened } = this.store.state;
-    console.log(selectedCategory);
     return `
             <a class="select-category__button"></a>
             <a class="select-category__current">${selectedCategory}</a>     
