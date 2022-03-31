@@ -34,8 +34,8 @@ export class SearchForm extends View {
   }
 
   mount() {
-    new SearchPopup(this.store, this.select("#popupWords"), this);
-    new SearchCategory(this.store, this.select(".select-category"), this);
+    new SearchPopup(<HTMLElement>this.select("#popupWords"), this);
+    new SearchCategory(<HTMLElement>this.select(".select-category"), this);
   }
 
   setEvent() {
@@ -43,43 +43,50 @@ export class SearchForm extends View {
       "focus",
       "#searchKeyword",
       (e) => {
-        this.#popupWords().style.display = "block";
+        (<HTMLElement>this.#popupWords()).style.display = "block";
       },
       true
     );
     this.addEvent("click", ".select-category", (e) => {
-      const { isOpened } = this.store.state;
-      this.store.setState({ isOpened: !isOpened });
+      const { isOpened } = this.state;
+      this.setState({ isOpened: !isOpened });
     });
+
     this.addEvent("keyup", "#searchKeyword", (e) => {
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return false;
-      const { selected } = this.store.state;
+
+      const { selected } = this.state;
       const items = [...this.selectAll("a[data-idx]")];
-      this.store.setState({ isArrowKey: true });
+      this.setState({ isArrowKey: true });
       return e.key === "ArrowUp"
         ? selected === -1
           ? false
-          : ((e.target.value = items[selected - 1].textContent),
-            this.store.setState({ selected: selected - 1, isArrowKey: false }))
+          : (((<HTMLInputElement>e.target).value = <string>(
+              items[selected - 1].textContent
+            )),
+            this.setState({ selected: selected - 1, isArrowKey: false }))
         : selected === items.length - 1
         ? false
-        : ((e.target.value = items[selected + 1].textContent),
-          this.store.setState({ selected: selected + 1, isArrowKey: false }));
+        : (((<HTMLInputElement>e.target).value = <string>(
+            items[selected - 1].textContent
+          )),
+          this.setState({ selected: selected + 1, isArrowKey: false }));
     });
 
-    this.addEvent("input", "#searchKeyword", ({ target: { value } }) => {
-      const autoComplete = this.#autoComplete();
-      this.store.setState({ currentInput: value });
-      autoComplete.className = value.length ? "auto" : null;
+    this.addEvent("input", "#searchKeyword", ({ target }) => {
+      const value = (<HTMLInputElement>target).value;
+      const autoComplete = <HTMLElement>this.#autoComplete();
+      this.setState({ currentInput: value });
+      autoComplete.className = value.length ? "auto" : "";
     });
 
     this.addEvent("submit", "#searchForm", (e) => {
       e.preventDefault();
-      const { recentItems, currentInput } = this.store.state;
+      const { recentItems, currentInput } = this.state;
       if (!currentInput) return false;
       const newItems = [...recentItems];
       newItems.unshift(currentInput);
-      this.store.setState({ recentItems: newItems });
+      this.setState({ recentItems: newItems });
       localStorage.setItem(Store.storageKey, JSON.stringify(newItems));
     });
   }

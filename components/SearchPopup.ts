@@ -6,7 +6,8 @@ export class SearchPopup extends View {
 
   initState() {
     return {
-      recentItems: JSON.parse(localStorage.getItem(Store.storageKey)) || [],
+      recentItems:
+        JSON.parse(<string>localStorage.getItem(Store.storageKey)) || [],
       currentInput: "",
       selected: -1,
       isArrowKey: false,
@@ -15,17 +16,17 @@ export class SearchPopup extends View {
 
   template() {
     const { currentInput, recentItems, words, selected, isArrowKey } =
-      this.store.state;
+      this.state;
     isArrowKey
-      ? this.store.unsubscribe("currentInput", this)
-      : this.store.subscribe("currentInput", this);
+      ? this.unsubscribe("currentInput", this)
+      : this.subscribe("currentInput", this);
     return `
                 <div id="autoComplete">
                 ${
                   currentInput.length
                     ? words
-                        .filter((word) => word.includes(currentInput))
-                        .reduce((acc, cur, idx) => {
+                        .filter((word: string) => word.includes(currentInput))
+                        .reduce((acc: string, cur: string, idx: number) => {
                           const [front, back] = cur.split(currentInput.trim());
                           acc += `<a data-idx=${idx} class="auto" style=${
                             idx === selected ? "text-decoration:underline" : ""
@@ -37,7 +38,7 @@ export class SearchPopup extends View {
             </h3>
         <ol>${recentItems
           .map(
-            (item, idx) =>
+            (item: string, idx: number) =>
               `<li ><a data-idx=${idx} style=${
                 idx === selected ? "text-decoration:underline" : ""
               }>${item}</a><span class="delete">삭제</span></li>`
@@ -49,10 +50,11 @@ export class SearchPopup extends View {
 
   setEvent() {
     this.addEvent("click", ".delete", (e) => {
-      const { recentItems, currentInput } = this.store.state;
+      const target = e.target as HTMLElement;
+      const { recentItems, currentInput } = this.state;
       const newItems = [...recentItems];
-      newItems.splice(parseInt(e.target.dataset.idx), 1);
-      this.store.setState({ recentItems: newItems });
+      newItems.splice(Number(target.dataset.idx), 1);
+      this.setState({ recentItems: newItems });
       localStorage.setItem(Store.storageKey, JSON.stringify(newItems));
     });
   }
