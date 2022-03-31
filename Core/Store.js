@@ -1,19 +1,19 @@
-import { ModelVisitor } from "./Visitor.js";
-import { App } from "../app.js";
-import { EventHandler } from "./EventHandler.js";
+import {ModelVisitor} from "./Visitor.js";
+import {App} from "../app.js";
+import {EventHandler} from "./EventHandler.js";
 
 export class Store extends Map {
   #state = {};
   state;
-
+  static #storageKey = Symbol().toString()
   static get storageKey() {
-    return Symbol().toString();
+    return this.#storageKey;
   }
 
   constructor(state = {}) {
     super();
     this.#state = this.observe(this.#state);
-    this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
+    this.state = new Proxy(state, {get: (target, name) => this.#state[name]});
   }
 
   addView(view) {
@@ -25,8 +25,8 @@ export class Store extends Map {
 
   subscribe(key, view) {
     super.has(key)
-      ? super.get(key).add(view)
-      : super.set(key, new Set().add(view));
+        ? super.get(key).add(view)
+        : super.set(key, new Set().add(view));
   }
 
   unsubscribe(key, view) {
@@ -50,7 +50,7 @@ export class Store extends Map {
         Reflect.set(target, name, value);
         if (super.has(name))
           super.get(name).forEach((view) => {
-            view.setState({ [name]: target[name] });
+            view.setState({[name]: target[name]});
           });
         return true;
       },
