@@ -13,7 +13,6 @@ export class SearchForm extends View {
         <form id="searchForm">                   
            <fieldset>
                     <legend>상품검색</legend>
-<<
                     <div class="searchForm">  
                         <div class="select-category">
 
@@ -25,7 +24,6 @@ export class SearchForm extends View {
                 </fieldset>
                 <div id="popupWords" style="display:none">
                 </div>
-
               </form>    
             </div>
       </div>

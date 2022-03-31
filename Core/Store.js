@@ -5,6 +5,7 @@ import { EventHandler } from "./EventHandler.js";
 export class Store extends Map {
   #state = {};
   state;
+
   static #storageKey = Symbol().toString();
   static get storageKey() {
     return this.#storageKey;
