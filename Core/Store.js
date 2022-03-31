@@ -7,6 +7,7 @@ export class Store extends Map {
   state;
 
   static #storageKey = Symbol().toString();
+
   static get storageKey() {
     return this.#storageKey;
   }
