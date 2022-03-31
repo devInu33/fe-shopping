@@ -149,7 +149,7 @@ body {
   margin-right: 30px;
   text-align: center;
 }
-#header .categoryBtn a {
+#header .categoryBtn > a {
   display: block;
   margin-top: 73px;
   color: #fff;
@@ -311,6 +311,110 @@ body {
   left: 14px;
   display: inline-block;
   position: absolute;
+}
+
+.categoryBtn .category-layer {
+  position: absolute;
+  top: 114px;
+  left: 0;
+  width: auto;
+  height: auto;
+  min-height: 450px;
+  border: 1px solid #ddd;
+  box-shadow: -1px 4px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  background: #fff;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+.categoryBtn .category-layer h3 {
+  display: block;
+  width: 0;
+  height: 0;
+  text-indent: -9em;
+  overflow: hidden;
+  font-size: 0;
+}
+.categoryBtn .category-layer .shopping-list {
+  padding: 8px 0 5px 0;
+  border-bottom: #ddd solid 1px;
+  margin: 0;
+}
+.categoryBtn .category-layer .shopping-list li {
+  height: 29px;
+  width: 100%;
+}
+.categoryBtn .category-layer .shopping-list li .layer.first {
+  position: relative;
+  width: 114px;
+  height: 20px;
+  padding: 9px 0 0 51px;
+  white-space: nowrap;
+  display: inline-block;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+}
+.categoryBtn .category-layer .shopping-list li .depth.second {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 163px;
+  min-height: 450px;
+  background-image: none;
+  background-color: #fff;
+  margin: -1px 0 0 0;
+  padding-right: 0;
+  border: 1px solid #ddd;
+  box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 2;
+}
+.categoryBtn .category-layer .shopping-list li .depth.second.selected {
+  display: block;
+  width: 591px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.depth ul {
+  height: 100%;
+  border: 0;
+  padding-top: 12px;
+  position: absolute;
+  z-index: 2;
+  background: #fff;
+}
+.depth ul li {
+  width: 157px;
+  height: 28px;
+  overflow: hidden;
+}
+.depth ul li a {
+  font-size: 12px;
+  width: 137px;
+  height: 28px;
+  position: relative;
+  letter-spacing: -1px;
+  padding: 9px 0 0 20px;
+  white-space: nowrap;
+  display: inline-block;
+  color: #333;
+  cursor: pointer;
+}
+
+.depth.third {
+  position: absolute;
+  left: 157px;
+  top: 0;
+  height: 100%;
+  width: 177px;
+  border-left: #ddd solid 1px;
+  display: none;
+}
+.depth.third.selected {
+  display: block;
 }
 
 body {
@@ -480,6 +584,7 @@ body {
   font-size: 12px;
   font-weight: normal;
   height: 37px;
+  display: block;
 }
 #searchForm .searchForm .select-category .select-category__button {
   background-image: url("//static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png");
@@ -589,8 +694,7 @@ body {
   border-bottom: 1px solid #ddd;
   font-size: 12px;
 }
-#popupWords #autoComplete .auto {
-  cursor: pointer;
+#popupWords #autoComplete > a {
   height: 13px;
   overflow: hidden;
   white-space: nowrap;
@@ -602,9 +706,14 @@ body {
   display: block;
   padding: 0 0 16px 0;
 }
-#popupWords #autoComplete .auto > strong {
+#popupWords #autoComplete > a > strong {
   color: #008cff;
   font-weight: bold;
+}
+#popupWords #autoComplete > a:hover {
+  text-decoration: underline;
+  color: #0070ff;
+  background-color: blue;
 }
 
 #autoComplete > ol {
@@ -649,6 +758,38 @@ body {
 #autoComplete > ol li .delete:hover {
   text-indent: 0;
   background-position: -95px -182px;
+}
+
+.select-category .select-category__option {
+  top: 38px;
+  max-height: 754px;
+  display: none;
+  width: 125px;
+  padding: 10px 0 10px 10px;
+  border: 1px solid #ddd;
+  left: -2px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  z-index: 1;
+  overflow-y: auto;
+  margin-top: -1px;
+  position: absolute;
+}
+.select-category .select-category__option li {
+  font-size: 12px;
+}
+.select-category .select-category__option li a {
+  display: block;
+  outline: 0;
+  padding: 7px 0 7px 3px;
+  letter-spacing: -1px;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.select-category .select-category__option li a:hover {
+  text-decoration: underline;
+  color: blue;
 }
 
 /*# sourceMappingURL=index.css.map */

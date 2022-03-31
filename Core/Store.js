@@ -1,15 +1,19 @@
-import { ModelVisitor } from "./Visitor.js";
-import { App } from "../app.js";
-import { EventHandler } from "./EventHandler.js";
+import {ModelVisitor} from "./Visitor.js";
+import {App} from "../app.js";
+import {EventHandler} from "./EventHandler.js";
 
-export class Store {
+export class Store extends Map {
   #state = {};
   state;
-  #subscriber = new Map();
+  static #storageKey = Symbol().toString()
+  static get storageKey() {
+    return this.#storageKey;
+  }
 
   constructor(state = {}) {
-    this.#state = this.observe(state);
-    this.state = new Proxy(state, { get: (target, name) => this.#state[name] });
+    super();
+    this.#state = this.observe(this.#state);
+    this.state = new Proxy(state, {get: (target, name) => this.#state[name]});
   }
 
   addView(view) {
@@ -20,15 +24,14 @@ export class Store {
   }
 
   subscribe(key, view) {
-    if (this.#subscriber.has(key)) this.#subscriber.get(key).add(view);
-    else {
-      this.#subscriber.set(key, new Set().add(view));
-    }
+    super.has(key)
+        ? super.get(key).add(view)
+        : super.set(key, new Set().add(view));
   }
 
   unsubscribe(key, view) {
-    if (!this.#subscriber.has(key)) return;
-    this.#subscriber.get(key).delete(view);
+    if (!super.has(key)) return;
+    super.get(key).delete(view);
   }
 
   observe(state) {
@@ -45,11 +48,10 @@ export class Store {
       set: (target, name, value) => {
         if (target[name] == value) return true;
         Reflect.set(target, name, value);
-
-        if (this.#subscriber.has(name))
-          this.#subscriber
-            .get(name)
-            .forEach((view) => view.setState({ [name]: target[name] }));
+        if (super.has(name))
+          super.get(name).forEach((view) => {
+            view.setState({[name]: target[name]});
+          });
         return true;
       },
     };
@@ -58,7 +60,7 @@ export class Store {
 
   setState(newState) {
     for (const [key, value] of Object.entries(newState)) {
-      if (!key in this.#state) return;
+      if (!key in this.#state) continue;
       this.#state[key] = value;
     }
   }

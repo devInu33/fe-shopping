@@ -59,7 +59,7 @@
     margin-right: 30px;
     text-align: center;
 
-    a {
+    > a {
       display: block;
       margin-top: 73px;
       color: #fff;
@@ -195,5 +195,108 @@
   .coupang-global {
     @include shared.gnb_menu_link(36px);
     @include shared.gnb_menu_icon("https://static.coupangcdn.com/image/coupang/home/icons/Overseas.png", 3px, 14px);
+  }
+}
+
+.categoryBtn {
+  .category-layer {
+    @include shared.absolute_zero($top: 114px, $left: 0);
+    @include shared.width_height($width: auto, $height: auto);
+    min-height: 450px;
+    border: 1px solid #ddd;
+    box-shadow: -1px 4px 5px rgb(0 0 0 / 30%);
+    z-index: 1;
+    background: #fff;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+
+
+    h3 {
+      display: block;
+      @include shared.width_height($width: 0, $height: 0);
+      text-indent: -9em;
+      overflow: hidden;
+      font-size: 0;
+    }
+
+    .shopping-list {
+      padding: 8px 0 5px 0;
+      border-bottom: #ddd solid 1px;
+      margin: 0;
+
+      li {
+        height: 29px;
+        width: 100%;
+
+        .layer.first {
+          position: relative;
+          @include shared.width_height($width: 114px, $height: 20px);
+          padding: 9px 0 0 51px;
+          white-space: nowrap;
+          display: inline-block;
+          color: #333;
+          font-size: 12px;
+          cursor: pointer;
+        }
+
+        .depth.second {
+          @include shared.width_height($height: 100%);
+          @include shared.absolute_zero($top: 0, $left: 163px);
+          min-height: 450px;
+          background-image: none;
+          background-color: #fff;
+          margin: -1px 0 0 0;
+          padding-right: 0;
+          border: 1px solid #ddd;
+          box-shadow: 2px 4px 5px rgb(0 0 0 / 30%);
+          display: none;
+          z-index: 2;
+
+          &.selected {
+            display: block;
+            @include shared.width_height($width: 591px, $height: 100%);
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+}
+
+.depth ul {
+  height: 100%;
+  border: 0;
+  padding-top: 12px;
+  position: absolute;
+  z-index: 2;
+  background: #fff;
+
+  li {
+    @include shared.width_height($width: 157px, $height: 28px);
+    overflow: hidden;
+
+    a {
+      font-size: 12px;
+      @include shared.width_height($width: 137px, $height: 28px);
+      position: relative;
+      letter-spacing: -1px;
+      padding: 9px 0 0 20px;
+      white-space: nowrap;
+      display: inline-block;
+      color: #333;
+      cursor: pointer;
+    }
+  }
+}
+
+.depth.third {
+  @include shared.absolute_zero($left: 157px, $top: 0);
+  @include shared.width_height($height: 100%, $width: 177px);
+  border-left: #ddd solid 1px;
+  display: none;
+
+  &.selected {
+    display: block;
   }
 }

@@ -8,25 +8,43 @@ export default class View {
   #handler = new EventHandler();
   store;
   #state;
-  // parent;
-  // next = null;
-  // child = null;
+  next = null;
+  #head = null;
+  prop;
 
-  constructor(store, el, parent = undefined) {
+  constructor(store, el, parent = undefined, prop = undefined) {
     this.store = store;
     this.store.addView(this);
+    if (parent) parent.setChild(this);
     this.#el = el;
+    this.#state = { ...this.initState() };
+
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
+      this.mount();
     });
   }
-
-  s;
 
   setState(newState) {
     this.#state = { ...this.#state, ...newState };
     this.render();
+  }
+
+  setChild(view) {
+    view.parent = this;
+    if (!this.#head) this.#head = view;
+    else this.#head.next = view;
+  }
+
+  set next(v) {
+    let curr = this;
+    if (!curr.next) {
+      curr.next = v;
+    } else {
+      while (curr.next) curr = curr.next;
+      curr.next = v;
+    }
   }
 
   initState() {
@@ -51,7 +69,8 @@ export default class View {
 
   render() {
     this.#el.innerHTML = this.template();
-    this.mount();
+    if (this.next) this.next.render();
+    if (this.#head) this.#head.render();
   }
 
   template() {

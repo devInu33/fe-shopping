@@ -3,11 +3,10 @@ import { Mainbanner } from "./components/Mainbanner.js";
 import View from "./Core/View.js";
 import { Store } from "./Core/Store.js";
 import { ModelVisitor } from "./Core/Visitor.js";
-import {SearchForm} from "./components/SearchForm.js";
-
+import { SearchForm } from "./components/SearchForm.js";
+import { Megadrop } from "./components/Megadrop.js";
 
 export class App extends View {
-
   template() {
     return `<div class="header">
             <article class="top-bar">
@@ -57,6 +56,7 @@ export class App extends View {
                 </section>
                 <div class="categoryBtn">
                     <a>카테고리</a>
+                    <div class="category-layer"></div>
                 </div>
             </header>
         </div>
@@ -67,18 +67,41 @@ export class App extends View {
             <article></article>
         </section>`;
   }
-  mount(){
+
+  mount() {
     new Mainbanner(store, this.select(".banner"), this);
     new SearchForm(store, this.select(".product-search"), this);
+    new Megadrop(store, this.select(".category-layer"), this);
   }
+
   setEvent() {
-    this.addEvent('click', 'body', (e)=>{
-      if(!e.target.closest('form')) this.select('#popupWords').style.display = 'none';
-      else{this.select('#popupWords').style.display='block';}
-    })
+    this.addEvent("click", "body", ({ target }) => {
+      if (
+        target.closest(".product-search") ||
+        target.closest(".select-category")
+      ) {
+        return false;
+      } else this.select("#popupWords").style.display = "none";
+    });
+    this.addEvent(
+      "mouseenter",
+      ".categoryBtn",
+      (e) => {
+        this.store.setState({ layerSelected: true });
+      },
+      true
+    );
+    this.addEvent(
+      "mouseleave",
+      ".categoryBtn",
+      (e) => {
+        if (e.relatedTarget.closest(".categoryBtn")) return false;
+        this.store.setState({ layerSelected: false });
+      },
+      true
+    );
   }
 }
 
 const store = new Store();
 const app = new App(store, document.body);
-
