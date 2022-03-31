@@ -15,10 +15,10 @@ export default class View {
   constructor(store, el, parent = undefined, prop = undefined) {
     this.store = store;
     this.store.addView(this);
-    this.prop = prop;
     if (parent) parent.setChild(this);
     this.#el = el;
     this.#state = { ...this.initState() };
+
     requestAnimationFrame(() => {
       this.setEvent();
       this.render();
@@ -67,10 +67,10 @@ export default class View {
     this.#handler.startAuto(fn, delay);
   }
 
-  *render() {
-    yield (this.#el.innerHTML = this.template());
-    if (this.next) yield* this.next.render();
-    if (this.#head) yield* this.#head.render();
+  render() {
+    this.#el.innerHTML = this.template();
+    if (this.next) this.next.render();
+    if (this.#head) this.#head.render();
   }
 
   template() {
