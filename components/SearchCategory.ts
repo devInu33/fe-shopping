@@ -11,7 +11,7 @@ export class SearchCategory extends View {
   }
 
   template() {
-    const { selectedCategory, categories, isOpened } = this.store.state;
+    const { selectedCategory, categories, isOpened } = this.state;
     return `
             <a class="select-category__button"></a>
             <a class="select-category__current">${selectedCategory}</a>     
@@ -20,7 +20,7 @@ export class SearchCategory extends View {
             }>
             ${categories
               .map(
-                (cat) =>
+                (cat: string) =>
                   `<li class="cat-item">
                 <a>${cat}</a>
               </li>`
@@ -32,8 +32,8 @@ export class SearchCategory extends View {
 
   setEvent() {
     this.addEvent("click", ".cat-item", (e) => {
-      this.store.setState({
-        selectedCategory: e.target.textContent,
+      this.setState({
+        selectedCategory: (<HTMLElement>e.target).textContent,
         isOpened: false,
       });
     });
