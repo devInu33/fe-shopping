@@ -2,6 +2,7 @@ import View from "../Core/View.js";
 
 import { SearchPopup } from "./SearchPopup.js";
 import { SearchCategory } from "./SearchCategory.js";
+import { Store } from "../Core/Store";
 
 export class SearchForm extends View {
   #popupWords = () => this.select("#popupWords"); //필드 바인딩 문제 때문에 람다로 사용했습니다.
@@ -12,19 +13,16 @@ export class SearchForm extends View {
         <form id="searchForm">                   
            <fieldset>
                     <legend>상품검색</legend>
-                    <div class="searchForm">
-                         
+                    <div class="searchForm">  
                         <div class="select-category">
                         </div>
-                        <label for="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!"
-                                                            autoComplete="off"/></label>
+                        <label for="searchKeyword"><input id="searchKeyword" placeholder="찾고 싶은 상품을 검색해보세요!" autoComplete="off"/></label>
                         <a class="speech-mic"></a>
                     </div>
                     <a id="searchBtn"></a>
                 </fieldset>
                 <div id="popupWords" style="display:none">
                 </div>
-
               </form>    
             </div>
       </div>
@@ -82,7 +80,7 @@ export class SearchForm extends View {
       const newItems = [...recentItems];
       newItems.unshift(currentInput);
       this.store.setState({ recentItems: newItems });
-      localStorage.setItem("RECENT", JSON.stringify(newItems));
+      localStorage.setItem(Store.storageKey, JSON.stringify(newItems));
     });
   }
 }

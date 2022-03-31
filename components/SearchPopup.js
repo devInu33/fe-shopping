@@ -1,9 +1,12 @@
 import View from "../Core/View.js";
+import { Store } from "../Core/Store";
 
 export class SearchPopup extends View {
+  static #storageKey = "RECENT";
+
   initState() {
     return {
-      recentItems: JSON.parse(localStorage.getItem("RECENT")) || [],
+      recentItems: JSON.parse(localStorage.getItem(Store.storageKey)) || [],
       currentInput: "",
       selected: -1,
       isArrowKey: false,
@@ -50,7 +53,7 @@ export class SearchPopup extends View {
       const newItems = [...recentItems];
       newItems.splice(parseInt(e.target.dataset.idx), 1);
       this.store.setState({ recentItems: newItems });
-      localStorage.setItem("RECENT", JSON.stringify(newItems));
+      localStorage.setItem(Store.storageKey, JSON.stringify(newItems));
     });
   }
 }
