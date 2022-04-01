@@ -1,5 +1,5 @@
 import View from "../Core/View.js";
-import { Store } from "../Core/Store";
+import { Store } from "../Core/Store.js";
 
 export class SearchPopup extends View {
   static #storageKey = "RECENT";

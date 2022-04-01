@@ -1,112 +1,115 @@
-import { delay } from "../util.js";
-import { EventHandler } from "./EventHandler.js";
-import { Store } from "./Store.js";
-import { ModelVisitor, Visitor } from "./Visitor.js";
+import {Store} from "./Store.js";
+import {EventHandler} from "./EventHandler.js";
 
 interface Node<T> {
-  head: T | null;
-  next: T | null;
-  parent: T | null;
-  visitor: Visitor;
+    head: T | null;
+    next: T | null;
+    parent: T | null;
 
-  setChild(node: T): void;
+    setChild(node: T): void;
 }
 
 export default class View extends Store implements Node<View> {
-  private readonly handler = new EventHandler();
+    private readonly handler = new EventHandler();
+    // public static readonly EMPTY: View = new View(document.createElement("null")); //el는 널이 될 수 없음.
+    head: View | null = null;
+    next: View | null = null;
+    state = Store.state;
 
-  head: View | null = null;
-
-  constructor(
-    private el: HTMLElement,
-    public parent: View | null = null,
-    public visitor: Visitor = new ModelVisitor(),
-    state = {}
-  ) {
-    super(state);
-    super.addView(this);
-    if (parent) parent.setChild(this);
-    requestAnimationFrame(() => {
-      this.setEvent();
-      this.render();
-      this.mount();
-    });
-  }
-
-  setChild(view: View) {
-    view.parent = this;
-    if (!this.head) this.head = view;
-    else this.head.next = view;
-  }
-
-  set next(v: View) {
-    let curr: View = this;
-    if (!curr.next) {
-      curr.next = v;
-    } else {
-      while (curr.next) curr = curr.next;
-      curr.next = v;
+    constructor(
+        private el: HTMLElement,
+        public parent: View | null = null,
+        state = {}
+    ) {
+        super(state);
+        super.addView(this);
+        if (parent) parent.setChild(this);
+        requestAnimationFrame(() => {
+            this.setEvent();
+            this.render();
+            this.mount();
+        });
     }
-  }
 
-  throttle(fn: () => void, time: number) {
-    this.handler.throttle(fn, time);
-  }
+    setChild(view: View) {
+        view.parent = this;
+        if (!this.head) this.head = view;
+        else this.head.setNext(view);
+    }
 
-  debounce(fn: () => void) {
-    this.handler.debounce(fn);
-  }
+    setNext(v: View | null): void {
+        let curr: View = this;
+        if (!curr.next) {
+            curr.next = v;
+        } else {
+            while (curr.next) {
+                curr = curr.next;
+            }
+            curr.next = v;
+        }
+    }
 
-  startAuto(fn: () => void, delay: number) {
-    this.handler.startAuto(fn, delay);
-  }
+    throttle(fn: () => void, time: number) {
+        this.handler.throttle(fn, time);
+    }
 
-  initState() {
-    return {};
-  }
+    debounce(fn: () => void) {
+        this.handler.debounce(fn);
+    }
 
-  setup() {}
+    startAuto(fn: () => void, delay: number) {
+        this.handler.startAuto(fn, delay);
+    }
 
-  mount(): void {}
+    initState() {
+        return {};
+    }
 
-  render() {
-    this.el.innerHTML = this.template();
-    if (this.next) this.next.render();
-    if (this.head) this.head.render();
-  }
+    setup() {
+    }
 
-  template() {
-    return ``;
-  }
+    mount(): void {
+    }
 
-  setEvent() {}
+    render() {
+        this.el.innerHTML = this.template();
+        if (this.next) this.next.render();
+        if (this.head) this.head.render();
+    }
 
-  addEvent<T extends keyof GlobalEventHandlersEventMap>(
-    eventType: T,
-    selector: string,
-    callback: (e: GlobalEventHandlersEventMap[T]) => void,
-    capture = false
-  ) {
-    const children = [...this.el.querySelectorAll(selector)];
-    const isTarget = (target: HTMLElement | null): boolean => {
-      if (!target) return false;
-      return Boolean(target.closest(selector)) || children.includes(target);
-    };
-    this.el.addEventListener(
-      eventType,
-      (e) => {
-        if (!isTarget(e.target as HTMLElement)) return false;
-        callback(e);
-      },
-      capture
-    );
-  }
+    template() {
+        return ``;
+    }
 
-  select(selector: string): HTMLElement | null {
-    return this.el.querySelector(selector);
-  }
+    setEvent() {
+    }
 
-  selectAll(selector: string) {
-    return this.el.querySelectorAll(selector);
-  }
+    addEvent<T extends keyof GlobalEventHandlersEventMap>(
+        eventType: T,
+        selector: string,
+        callback: (e: GlobalEventHandlersEventMap[T]) => void,
+        capture = false
+    ) {
+        const children = [...this.el.querySelectorAll(selector)];
+        const isTarget = (target: HTMLElement | null): boolean => {
+            if (!target) return false;
+            return Boolean(target.closest(selector)) || children.includes(target);
+        };
+        this.el.addEventListener(
+            eventType,
+            (e) => {
+                if (!isTarget(<HTMLElement>e.target)) return false;
+                callback(e);
+            },
+            capture
+        );
+    }
+
+    select(selector: string): HTMLElement | null {
+        return this.el.querySelector(selector);
+    }
+
+    selectAll(selector: string) {
+        return this.el.querySelectorAll(selector);
+    }
 }

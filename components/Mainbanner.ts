@@ -15,10 +15,11 @@ export class Mainbanner extends View {
   }
 
   template() {
-    const { banner, sidebar } = this.store.state;
+    const { banner, sidebar } = this.state;
+    console.log(banner, sidebar);
     return ` ${banner
       .map(
-        (img, idx) =>
+        (img: string, idx: number) =>
           `<img class="main_bg ${
             idx === this.#idx ? "selected" : ""
           }" src="${img}" >`
@@ -34,7 +35,7 @@ export class Mainbanner extends View {
             <ul class="thumbnail">
             ${sidebar
               .map(
-                (img, idx) =>
+                (img: string, idx: number) =>
                   `<li><a><img  src="${img}"/><span class="product_thumbnail ${
                     idx === this.#idx ? "selected" : ""
                   }" data-idx=${idx}  ></span></a></li>`
@@ -45,7 +46,7 @@ export class Mainbanner extends View {
         `;
   }
 
-  changeBanner = (next) => {
+  changeBanner = (next: number) => {
     const spans = this.#spans(),
       imgs = this.#images();
     spans[this.#idx].classList.remove("selected");
@@ -60,9 +61,9 @@ export class Mainbanner extends View {
       this.#idx === 5 ? this.changeBanner(0) : this.changeBanner(this.#idx + 1);
 
     this.startAuto(auto, 3000);
-    this.addEvent("mouseover", "span", (e) => {
+    this.addEvent("mouseover", "span", ({ target }) => {
       this.throttle(
-        () => this.changeBanner(parseInt(e.target.dataset.idx)),
+        () => this.changeBanner(Number((<HTMLElement>target).dataset.idx)),
         100
       );
     });
