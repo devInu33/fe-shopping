@@ -18,8 +18,8 @@ export class SearchPopup extends View {
     const { currentInput, recentItems, words, selected, isArrowKey } =
       this.state;
     isArrowKey
-      ? this.unsubscribe("currentInput", this)
-      : this.subscribe("currentInput", this);
+      ? this.store.unsubscribe("currentInput", this)
+      : this.store.subscribe("currentInput", this);
     return `
                 <div id="autoComplete">
                 ${

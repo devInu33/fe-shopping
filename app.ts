@@ -68,9 +68,13 @@ export class App extends View {
   }
 
   mount() {
-    new Mainbanner(<HTMLElement>this.select(".banner"), this);
-    new SearchForm(<HTMLElement>this.select(".product-search"), this);
-    new Megadrop(<HTMLElement>this.select(".category-layer"), this);
+    new Mainbanner(this.store, <HTMLElement>this.select(".banner"), this);
+    new SearchForm(
+      this.store,
+      <HTMLElement>this.select(".product-search"),
+      this
+    );
+    new Megadrop(this.store, <HTMLElement>this.select(".category-layer"), this);
   }
 
   setEvent() {
@@ -102,4 +106,5 @@ export class App extends View {
   }
 }
 
-const app = new App(document.body);
+const store = new Store();
+const app = new App(store, document.body);

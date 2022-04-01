@@ -1,8 +1,8 @@
 import View from "../Core/View.js";
 
-import {SearchPopup} from "./SearchPopup.js";
-import {SearchCategory} from "./SearchCategory.js";
-import {Store} from "../Core/Store.js";
+import { SearchPopup } from "./SearchPopup.js";
+import { SearchCategory } from "./SearchCategory.js";
+import { Store } from "../Core/Store.js";
 
 export class SearchForm extends View {
   #popupWords = () => this.select("#popupWords"); //필드 바인딩 문제 때문에 람다로 사용했습니다.
@@ -34,64 +34,68 @@ export class SearchForm extends View {
   }
 
   mount() {
-    new SearchPopup(<HTMLElement>this.select("#popupWords"), this);
-    new SearchCategory(<HTMLElement>this.select(".select-category"), this);
+    new SearchPopup(this.store, <HTMLElement>this.select("#popupWords"), this);
+    new SearchCategory(
+      this.store,
+      <HTMLElement>this.select(".select-category"),
+      this
+    );
   }
 
   setEvent() {
     this.addEvent(
-        "focus",
-        "#searchKeyword",
-        (e) => {
-          (<HTMLElement>this.#popupWords()).style.display = "block";
-        },
-        true
+      "focus",
+      "#searchKeyword",
+      (e) => {
+        (<HTMLElement>this.#popupWords()).style.display = "block";
+      },
+      true
     );
     this.addEvent("click", ".select-category", (e) => {
-      const {isOpened} = this.state;
-      this.setState({isOpened: !isOpened});
+      const { isOpened } = this.state;
+      this.setState({ isOpened: !isOpened });
     });
 
     this.addEvent("keyup", "#searchKeyword", (e) => {
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return false;
 
-      const {selected} = this.state;
+      const { selected } = this.state;
       const items = [...this.selectAll("a[data-idx]")];
-      this.setState({isArrowKey: true});
+      this.setState({ isArrowKey: true });
       if (e.key === "ArrowUp") {
         return selected === -1
-            ? false
-            : (((<HTMLInputElement>e.target).value = <string>(
-                items[selected - 1].textContent
+          ? false
+          : (((<HTMLInputElement>e.target).value = <string>(
+              items[selected - 1].textContent
             )),
-                this.setState({
-                  selected: selected - 1,
-                  isArrowKey: false,
-                }));
+            this.setState({
+              selected: selected - 1,
+              isArrowKey: false,
+            }));
       } else {
         return selected === items.length - 1
-            ? false
-            : (((<HTMLInputElement>e.target).value = <string>(
-                items[selected + 1].textContent
+          ? false
+          : (((<HTMLInputElement>e.target).value = <string>(
+              items[selected + 1].textContent
             )),
-                this.setState({selected: selected + 1, isArrowKey: false}));
+            this.setState({ selected: selected + 1, isArrowKey: false }));
       }
     });
 
-    this.addEvent("input", "#searchKeyword", ({target}) => {
+    this.addEvent("input", "#searchKeyword", ({ target }) => {
       const value = (<HTMLInputElement>target).value;
       const autoComplete = <HTMLElement>this.#autoComplete();
-      this.setState({currentInput: value});
+      this.setState({ currentInput: value });
       autoComplete.className = value.length ? "auto" : "";
     });
 
     this.addEvent("submit", "#searchForm", (e) => {
       e.preventDefault();
-      const {recentItems, currentInput} = this.state;
+      const { recentItems, currentInput } = this.state;
       if (!currentInput) return false;
       const newItems = [...recentItems];
       newItems.unshift(currentInput);
-      this.setState({recentItems: newItems});
+      this.setState({ recentItems: newItems });
       localStorage.setItem(Store.storageKey, JSON.stringify(newItems));
     });
   }

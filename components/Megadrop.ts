@@ -1,7 +1,7 @@
 import View from "../Core/View.js";
 import {sources, stateObj} from "../util.js";
 
-type Layer = Record<string, Record<string, string[]> | string[]>;
+type Layer = Record<string, Record<string | any, string[] | any>> | string[];
 
 export class Megadrop extends View {
     initState() {
@@ -13,34 +13,37 @@ export class Megadrop extends View {
         };
     }
 
+    recursiveLayer = (
+        layer: any,
+        idx: number = 1,
+        stateIdx: number | undefined = this.state.firstIdx
+    ): string =>
+        idx !== 3
+            ? Object.entries(layer as Layer).reduce((str, [cat, sub], subindex) => {
+                str += `<li data-idx=${subindex}><a class="layer ${
+                    idx == 1 ? "first" : "second"
+                }"></a><div class="depth ${idx == 1 ? "second" : "third"}" style=${
+                    subindex == stateIdx ? "display:block" : "display:none"
+                }><ul>${this.recursiveLayer(
+                    sub,
+                    ++idx,
+                    this.state.secondIdx
+                )}</ul></div></li>`;
+                return str;
+            }, "")
+            : layer
+                .map((cat: string) => `<li class="layer third"><a>${cat}</a>`)
+                .join("");
     //3단 객체
     //
     template() {
         const {layers, layerSelected, firstIdx, secondIdx} = this.state;
+        console.log(layers);
         return `
         <h3></h3>
         <ul class="shopping-layer" style=${
             layerSelected ? "display:block" : "display:none"
-        }>
-        ${Object.entries(layers as Layer)
-            .map(
-                ([cat, sub], idx1) =>
-                    `<li  data-idx=${idx1} ><a class="layer first">${cat}</a><div class="depth second" style=${
-                        idx1 === firstIdx ? "display:block" : "display:none"
-                    }><div><ul>${Object.entries(sub)
-                        .map(
-                            ([cat, sub], idx2) =>
-                                `<li  data-idx=${idx2}><a class="layer second">${cat}</a><div class="depth third" style=${
-                                    idx2 === secondIdx ? "display:block" : "display:none"
-                                }><ul>${sub
-                                    .map(
-                                        (cat: string) => `<li class="layer third"><a>${cat}</a>`
-                                    )
-                                    .join("")}</ul></div></li>`
-                        )
-                        .join("")}</ul></div></div></li>`
-            )
-            .join("")}
+        }>${this.recursiveLayer(layers)}
       </ul>
       `;
     }
@@ -54,6 +57,7 @@ export class Megadrop extends View {
                     ((target as HTMLElement).closest("li[data-idx]") as HTMLElement)
                         ?.dataset.idx
                 );
+                console.log("hi");
                 this.throttle(() => this.setState({firstIdx: idx}), 100);
             },
             true
@@ -66,6 +70,7 @@ export class Megadrop extends View {
                     ((target as HTMLElement).closest("li[data-idx]") as HTMLElement)
                         ?.dataset.idx
                 );
+                console.log("hi");
                 this.throttle(() => this.setState({secondIdx: idx}), 100);
             },
             true

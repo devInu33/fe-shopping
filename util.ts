@@ -11,4 +11,4 @@ export const myFetch = async (key: string) => {
 };
 export const sources = await myFetch("sources");
 
-export type stateObj = { [key: string | symbol]: any };
+export type stateObj = Record<string | symbol, any>;

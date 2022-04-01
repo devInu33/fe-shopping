@@ -2,8 +2,8 @@ import View from "./View.js";
 import {stateObj} from "../util.js";
 
 export class Store extends Map<string | symbol, Set<View>> {
-    static #state: Record<string | symbol, any>;
-    static state: Record<string | symbol, any>;
+    #state: stateObj;
+    state: stateObj;
     private static _storageKey: string = Symbol().toString();
     static get storageKey(): string {
         return this._storageKey;
@@ -11,17 +11,16 @@ export class Store extends Map<string | symbol, Set<View>> {
 
     constructor(state = {}) {
         super();
-        if (!Store.#state) {
-            Store.#state = this.observe(state);
-            Store.state = new Proxy(state, {
-                get: (target, name) => Store.#state[name],
-            });
-        }
+
+        this.#state = this.observe(state);
+        this.state = new Proxy(state, {
+            get: (target, name) => this.#state[name],
+        });
     }
 
     addView(view: View) {
         Object.entries(view.initState()).forEach(([key, value]) => {
-            Store.#state[key] = value;
+            this.#state[key] = value;
             this.subscribe(key, view);
         });
     }
@@ -44,7 +43,7 @@ export class Store extends Map<string | symbol, Set<View>> {
         // if (name === isProxy) return true;
         // if (!prop.isProxy && typeof prop == "object")
         //   return new Proxy(prop, handler);
-        const handler: ProxyHandler<any> = {
+        const handler: ProxyHandler<stateObj> = {
             get: (target, name, receiver) => {
                 const prop = Reflect.get(target, name, receiver);
                 if (typeof prop === "undefined") return;
@@ -65,10 +64,11 @@ export class Store extends Map<string | symbol, Set<View>> {
         return new Proxy(state, handler);
     }
 
-    setState(newState: Record<string | symbol, any>) {
+    setState(newState: stateObj) {
         for (const [key, value] of Object.entries(newState)) {
-            if (!(key in Store.state)) continue;
-            Store.#state[key] = value;
+            console.log(super.get(key));
+            if (!(key in this.state)) continue;
+            this.#state[key] = value;
         }
     }
 }
