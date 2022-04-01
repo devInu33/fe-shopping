@@ -3,8 +3,8 @@ import View from "./View.js";
 import { stateObj } from "../util.js";
 
 export class Store extends Map<string | symbol, Set<View>> {
-  static #state: Record<string | symbol, any>;
-  static state: Record<string | symbol, any>;
+  #state: stateObj;
+  state: stateObj;
   private static _storageKey: string = Symbol().toString();
   static get storageKey(): string {
     return this._storageKey;
@@ -12,17 +12,16 @@ export class Store extends Map<string | symbol, Set<View>> {
 
   constructor(state = {}) {
     super();
-    if (!Store.#state) {
-      Store.#state = this.observe(state);
-      Store.state = new Proxy(state, {
-        get: (target, name) => Store.#state[name],
-      });
-    }
+
+    this.#state = this.observe(state);
+    this.state = new Proxy(state, {
+      get: (target, name) => this.#state[name],
+    });
   }
 
   addView(view: View) {
     Object.entries(view.initState()).forEach(([key, value]) => {
-      Store.#state[key] = value;
+      this.#state[key] = value;
       this.subscribe(key, view);
     });
   }
