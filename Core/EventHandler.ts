@@ -1,4 +1,4 @@
-import { delay } from "../util.js";
+import {delay} from "../util.js";
 
 export class EventHandler {
   #throttle: boolean = false;
@@ -14,16 +14,27 @@ export class EventHandler {
   }
 
   throttle(fn: () => void, time: number) {
-    if (this.#throttle) return false;
+    if (this.#throttle) return;
     this.#throttle = true;
     fn();
     delay(time).then(() => (this.#throttle = false));
   }
 
+  start(fn: Function) {
+    cancelAnimationFrame(this.#autoCallback);
+    this.#autoCallback = requestAnimationFrame((time) => {
+      fn(time);
+    });
+  }
+
+  cancel() {
+    cancelAnimationFrame(this.#autoCallback);
+  }
+
   startAuto(fn: () => void, delay: number) {
     cancelAnimationFrame(this.#autoCallback);
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.autoInterrupt(time, fn, delay)
+        this.autoInterrupt(time, fn, delay)
     );
   }
 
@@ -35,7 +46,8 @@ export class EventHandler {
       cancelAnimationFrame(this.#autoCallback);
     }
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.autoInterrupt(time, fn, delay)
+        this.autoInterrupt(time, fn, delay)
     );
   }
+
 }
