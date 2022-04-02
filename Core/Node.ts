@@ -45,13 +45,13 @@ export default class Node extends EventHandler {
   ) {
     const children = [...this.el.querySelectorAll(selector)];
     const isTarget = (target: HTMLElement | null): boolean => {
-      if (!target) return false;
+      if (!target) return;
       return Boolean(target.closest(selector)) || children.includes(target);
     };
     this.el.addEventListener(
       eventType,
       (e) => {
-        if (!isTarget(<HTMLElement>e.target)) return false;
+        if (!isTarget(<HTMLElement>e.target)) return;
         callback(e);
       },
       capture
