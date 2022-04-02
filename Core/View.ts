@@ -4,8 +4,6 @@ import { stateObj } from "../util.js";
 import Node from "./Node.js";
 
 export default class View extends Node {
-  private readonly handler = new EventHandler();
-
   state;
 
   constructor(
