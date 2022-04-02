@@ -11,7 +11,7 @@ export default class View extends Node {
   constructor(
     protected store: Store,
     el: HTMLElement,
-    parent: Node | null = null,
+    parent: View | null = null,
     state = {}
   ) {
     super(el, parent);

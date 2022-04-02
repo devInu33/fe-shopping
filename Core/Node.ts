@@ -6,7 +6,7 @@ export default class Node extends EventHandler {
 
   constructor(private el: HTMLElement, private parent: Node | null = null) {
     super();
-    if (parent) parent.head = this;
+    if (parent) parent.setChild(this);
   }
 
   setChild(node: Node) {
@@ -45,7 +45,7 @@ export default class Node extends EventHandler {
   ) {
     const children = [...this.el.querySelectorAll(selector)];
     const isTarget = (target: HTMLElement | null): boolean => {
-      if (!target) return;
+      if (!target) return false;
       return Boolean(target.closest(selector)) || children.includes(target);
     };
     this.el.addEventListener(
