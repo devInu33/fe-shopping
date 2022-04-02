@@ -84,7 +84,7 @@ export class App extends View {
         (<HTMLElement>target).closest(".product-search") ||
         (<HTMLElement>target).closest(".select-category")
       )
-        return false;
+        return;
       else (<HTMLElement>this.select("#popupWords")).style.display = "none";
     });
     this.addEvent(
@@ -99,7 +99,7 @@ export class App extends View {
       "mouseleave",
       ".categoryBtn",
       ({ relatedTarget }) => {
-        if ((<HTMLElement>relatedTarget).closest(".categoryBtn")) return false;
+        if ((<HTMLElement>relatedTarget).closest(".categoryBtn")) return;
         this.setState({ layerSelected: false });
       },
       true
