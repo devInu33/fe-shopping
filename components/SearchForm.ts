@@ -57,31 +57,27 @@ export class SearchForm extends View {
     });
 
     this.addEvent("keyup", "#searchKeyword", (e) => {
-      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return false;
-
       const { selected } = this.state;
       const items = [...this.selectAll("a[data-idx]")];
+      if (
+        (e.key !== "ArrowDown" && e.key !== "ArrowUp") ||
+        (e.key === "ArrowUp" && selected === 0) ||
+        (e.key === "ArrowDown" && selected === items.length - 1)
+      )
+        return;
       this.setState({ isArrowKey: true });
       if (e.key === "ArrowUp") {
-        return selected === -1
-          ? false
-          : (((<HTMLInputElement>e.target).value = <string>(
-              items[selected - 1].textContent
-            )),
-            this.setState({
-              selected: selected - 1,
-              isArrowKey: false,
-            }));
+        (<HTMLInputElement>e.target).value = <string>(
+          items[selected - 1].textContent
+        );
+        this.setState({ selected: selected - 1, isArrowKey: false });
       } else {
-        return selected === items.length - 1
-          ? false
-          : (((<HTMLInputElement>e.target).value = <string>(
-              items[selected + 1].textContent
-            )),
-            this.setState({ selected: selected + 1, isArrowKey: false }));
+        (<HTMLInputElement>e.target).value = <string>(
+          items[selected + 1].textContent
+        );
+        this.setState({ selected: selected + 1, isArrowKey: false });
       }
     });
-
     this.addEvent("input", "#searchKeyword", ({ target }) => {
       const value = (<HTMLInputElement>target).value;
       const autoComplete = <HTMLElement>this.#autoComplete();
@@ -92,7 +88,7 @@ export class SearchForm extends View {
     this.addEvent("submit", "#searchForm", (e) => {
       e.preventDefault();
       const { recentItems, currentInput } = this.state;
-      if (!currentInput) return false;
+      if (!currentInput) return;
       const newItems = [...recentItems];
       newItems.unshift(currentInput);
       this.setState({ recentItems: newItems });

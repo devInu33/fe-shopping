@@ -36,6 +36,32 @@
         overflow: hidden;
         text-indent: 10px;
       }
+
+      .shopping-list {
+        z-index: 1;
+        overflow-y: auto;
+        margin-top: -1px;
+        width: 125px;
+        padding: 10px 0 10px 10px;
+        border: 1px solid #ddd;
+        @include shared.absolute_zero($left: -2px, $top: 38px);
+        max-height: 856px;
+        box-shadow: 0 4px 5px rgb(0 0 0 / 30%);
+        background-color: #fff;
+
+        li {
+          font-size: 12px;
+
+          a {
+            display: block;
+            outline: 0;
+            padding: 7px 0 7px 3px;
+            letter-spacing: -1px;
+          }
+
+        }
+      }
+
     }
 
     #searchCategories {

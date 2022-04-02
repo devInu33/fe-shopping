@@ -336,16 +336,16 @@ body {
   overflow: hidden;
   font-size: 0;
 }
-.categoryBtn .category-layer .shopping-list {
+.categoryBtn .category-layer .shopping-layer {
   padding: 8px 0 5px 0;
   border-bottom: #ddd solid 1px;
   margin: 0;
 }
-.categoryBtn .category-layer .shopping-list li {
+.categoryBtn .category-layer .shopping-layer li {
   height: 29px;
   width: 100%;
 }
-.categoryBtn .category-layer .shopping-list li .layer.first {
+.categoryBtn .category-layer .shopping-layer li .layer.first {
   position: relative;
   width: 114px;
   height: 20px;
@@ -356,7 +356,7 @@ body {
   font-size: 12px;
   cursor: pointer;
 }
-.categoryBtn .category-layer .shopping-list li .depth.second {
+.categoryBtn .category-layer .shopping-layer li .depth.second {
   height: 100%;
   position: absolute;
   top: 0;
@@ -371,7 +371,7 @@ body {
   display: none;
   z-index: 2;
 }
-.categoryBtn .category-layer .shopping-list li .depth.second.selected {
+.categoryBtn .category-layer .shopping-layer li .depth.second.selected {
   display: block;
   width: 591px;
   height: 100%;
@@ -609,6 +609,29 @@ body {
   outline: 0;
   overflow: hidden;
   text-indent: 10px;
+}
+#searchForm .searchForm .select-category .shopping-list {
+  z-index: 1;
+  overflow-y: auto;
+  margin-top: -1px;
+  width: 125px;
+  padding: 10px 0 10px 10px;
+  border: 1px solid #ddd;
+  position: absolute;
+  left: -2px;
+  top: 38px;
+  max-height: 856px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+}
+#searchForm .searchForm .select-category .shopping-list li {
+  font-size: 12px;
+}
+#searchForm .searchForm .select-category .shopping-list li a {
+  display: block;
+  outline: 0;
+  padding: 7px 0 7px 3px;
+  letter-spacing: -1px;
 }
 #searchForm .searchForm #searchCategories {
   visibility: hidden;
