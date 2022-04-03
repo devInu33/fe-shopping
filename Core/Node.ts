@@ -4,7 +4,7 @@ export default class Node extends EventHandler {
   private head: Node | null = null;
   private next: Node | null = null;
 
-  constructor(private el: HTMLElement, private parent: Node | null = null) {
+  constructor(public el: HTMLElement, private parent: Node | null = null) {
     super();
     if (parent) parent.setChild(this);
   }
@@ -35,27 +35,6 @@ export default class Node extends EventHandler {
 
   template() {
     return ``;
-  }
-
-  addEvent<T extends keyof HTMLElementEventMap>(
-    eventType: T,
-    selector: string,
-    callback: (e: HTMLElementEventMap[T]) => void,
-    capture = false
-  ) {
-    const children = [...this.el.querySelectorAll(selector)];
-    const isTarget = (target: HTMLElement | null): boolean => {
-      if (!target) return false;
-      return Boolean(target.closest(selector)) || children.includes(target);
-    };
-    this.el.addEventListener(
-      eventType,
-      (e) => {
-        if (!isTarget(<HTMLElement>e.target)) return;
-        callback(e);
-      },
-      capture
-    );
   }
 
   select(selector: string): HTMLElement | null {

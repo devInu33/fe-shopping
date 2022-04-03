@@ -25,6 +25,27 @@ export default class View extends Node {
 
   setEvent() {}
 
+  addEvent<T extends keyof HTMLElementEventMap>(
+    eventType: T,
+    selector: string,
+    callback: (e: HTMLElementEventMap[T]) => void,
+    capture = false
+  ) {
+    const children = [...this.el.querySelectorAll(selector)];
+    const isTarget = (target: HTMLElement | null): boolean => {
+      if (!target) return false;
+      return Boolean(target.closest(selector)) || children.includes(target);
+    };
+    this.el.addEventListener(
+      eventType,
+      (e) => {
+        if (!isTarget(<HTMLElement>e.target)) return;
+        callback(e);
+      },
+      capture
+    );
+  }
+
   initState() {
     return {};
   }
