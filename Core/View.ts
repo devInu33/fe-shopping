@@ -3,7 +3,7 @@ import { EventHandler } from "./EventHandler.js";
 import { stateObj } from "../util.js";
 import Node from "./Node.js";
 
-export default class View extends Node {
+export default class View extends Node<HTMLElement> {
   state;
 
   constructor(
@@ -21,6 +21,10 @@ export default class View extends Node {
       this.render();
       this.mount();
     });
+  }
+
+  _render() {
+    this.el.innerHTML = this.template();
   }
 
   setEvent() {}
@@ -54,5 +58,13 @@ export default class View extends Node {
 
   setState(newState: stateObj): void {
     this.store.setState(newState);
+  }
+
+  select(selector: string): HTMLElement | null {
+    return this.el.querySelector(selector);
+  }
+
+  selectAll(selector: string): any {
+    return this.el.querySelectorAll(selector);
   }
 }

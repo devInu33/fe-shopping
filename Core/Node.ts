@@ -1,22 +1,22 @@
 import { EventHandler } from "./EventHandler.js";
 
-export default class Node extends EventHandler {
-  private head: Node | null = null;
-  private next: Node | null = null;
+export default abstract class Node<T> extends EventHandler {
+  private head: Node<T> | null = null;
+  private next: Node<T> | null = null;
 
-  constructor(public el: HTMLElement, private parent: Node | null = null) {
+  constructor(protected el: T, private parent: Node<T> | null = null) {
     super();
     if (parent) parent.setChild(this);
   }
 
-  setChild(node: Node) {
+  setChild(node: Node<T>) {
     node.parent = this;
     if (!this.head) this.head = node;
     else this.head.setNext(node);
   }
 
-  setNext(v: Node): void {
-    let curr: Node = this;
+  setNext(v: Node<T>): void {
+    let curr: Node<T> = this;
     if (!curr.next) {
       curr.next = v;
     } else {
@@ -28,20 +28,18 @@ export default class Node extends EventHandler {
   }
 
   render() {
-    this.el.innerHTML = this.template();
+    this._render();
     if (this.next) this.next.render();
     if (this.head) this.head.render();
   }
+
+  abstract _render(): void;
 
   template() {
     return ``;
   }
 
-  select(selector: string): HTMLElement | null {
-    return this.el.querySelector(selector);
-  }
+  abstract select(selector: string): T | null;
 
-  selectAll(selector: string) {
-    return this.el.querySelectorAll(selector);
-  }
+  abstract selectAll(selector: string): any;
 }
