@@ -2,8 +2,9 @@ import { Mainbanner } from "./components/Mainbanner.js";
 
 import View from "./Core/View.js";
 import { Store } from "./Core/Store.js";
-import { ModelVisitor } from "./Core/Visitor.js";
+
 import { SearchForm } from "./components/SearchForm.js";
+
 import { Megadrop } from "./components/Megadrop.js";
 
 export class App extends View {
@@ -69,32 +70,38 @@ export class App extends View {
   }
 
   mount() {
-    new Mainbanner(store, this.select(".banner"), this);
-    new SearchForm(store, this.select(".product-search"), this);
-    new Megadrop(store, this.select(".category-layer"), this);
+    new Mainbanner(this.store, <HTMLElement>this.select(".banner"), this);
+    new SearchForm(
+      this.store,
+      <HTMLElement>this.select(".product-search"),
+      this
+    );
+    new Megadrop(this.store, <HTMLElement>this.select(".category-layer"), this);
   }
 
   setEvent() {
     this.addEvent("click", "body", ({ target }) => {
-      if (!target.closest("form") || !target.closest(".select-category")) {
-        this.select("#popupWords").style.display = "none";
-        this.select(".category-layer").style.display = "none";
-      } else return false;
+      if (
+        (<HTMLElement>target).closest(".product-search") ||
+        (<HTMLElement>target).closest(".select-category")
+      )
+        return;
+      else (<HTMLElement>this.select("#popupWords")).style.display = "none";
     });
     this.addEvent(
       "mouseenter",
       ".categoryBtn",
       (e) => {
-        this.select(".category-layer").style.display = "block";
+        this.setState({ layerSelected: true });
       },
       true
     );
     this.addEvent(
       "mouseleave",
       ".categoryBtn",
-      (e) => {
-        if (e.relatedTarget.closest(".categoryBtn")) return false;
-        this.select(".category-layer").style.display = "none";
+      ({ relatedTarget }) => {
+        if ((<HTMLElement>relatedTarget).closest(".categoryBtn")) return;
+        this.setState({ layerSelected: false });
       },
       true
     );

@@ -1,11 +1,11 @@
-import { delay } from "../util.js";
+import {delay} from "../util.js";
 
 export class EventHandler {
-  #throttle;
+  #throttle: boolean = false;
   #autoCallback = -1;
   #prev = performance.now();
 
-  debounce(fn) {
+  debounce(fn: () => void) {
     let currentCallback = -1;
     return (() => {
       cancelAnimationFrame(currentCallback);
@@ -13,21 +13,32 @@ export class EventHandler {
     })();
   }
 
-  throttle(fn, time) {
-    if (this.#throttle === true) return false;
+  throttle(fn: () => void, time: number) {
+    if (this.#throttle) return;
     this.#throttle = true;
     fn();
     delay(time).then(() => (this.#throttle = false));
   }
 
-  startAuto(fn, delay) {
+  start(fn: Function) {
+    cancelAnimationFrame(this.#autoCallback);
+    this.#autoCallback = requestAnimationFrame((time) => {
+      fn(time);
+    });
+  }
+
+  cancel() {
+    cancelAnimationFrame(this.#autoCallback);
+  }
+
+  startAuto(fn: () => void, delay: number) {
     cancelAnimationFrame(this.#autoCallback);
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.autoInterrupt(time, fn, delay)
+        this.autoInterrupt(time, fn, delay)
     );
   }
 
-  autoInterrupt(time, fn, delay) {
+  autoInterrupt(time: number, fn: () => void, delay: number) {
     if (time - this.#prev >= delay) {
       this.#prev = time;
       fn();
@@ -35,7 +46,8 @@ export class EventHandler {
       cancelAnimationFrame(this.#autoCallback);
     }
     this.#autoCallback = requestAnimationFrame((time) =>
-      this.autoInterrupt(time, fn, delay)
+        this.autoInterrupt(time, fn, delay)
     );
   }
+
 }

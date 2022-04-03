@@ -210,7 +210,7 @@
     text-align: left;
     margin: 0;
     padding: 0;
-    display: none;
+
 
     h3 {
       display: block;
@@ -220,7 +220,9 @@
       font-size: 0;
     }
 
-    .shopping-list {
+
+    .shopping-layer {
+
       padding: 8px 0 5px 0;
       border-bottom: #ddd solid 1px;
       margin: 0;
@@ -228,7 +230,10 @@
       li {
         height: 29px;
 
-        a {
+        width: 100%;
+
+        .layer.first {
+
           position: relative;
           @include shared.width_height($width: 114px, $height: 20px);
           padding: 9px 0 0 51px;
@@ -284,6 +289,8 @@
       white-space: nowrap;
       display: inline-block;
       color: #333;
+
+      cursor: pointer;
     }
   }
 }
